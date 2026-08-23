@@ -55,6 +55,13 @@ function loadImage(src: string): Promise<HTMLImageElement> {
   });
 }
 
+// Ukuran karakter menyesuaikan lebar canvas: lebih kecil di layar sempit (mobile).
+function getCharacterHeight(canvasWidth: number): number {
+  return canvasWidth > 0 && canvasWidth < GAME_CONFIG.mobileBreakpoint
+    ? GAME_CONFIG.characterSizeMobile
+    : GAME_CONFIG.characterSize;
+}
+
 function createInitialState(): GameState {
   return {
     character: { y: 0, velocityY: 0, isJumping: false, frameIndex: 0, frameTimer: 0 },
@@ -169,7 +176,7 @@ export function EndlessRunnerGame() {
     const type: ObstacleType = roll < 0.18 ? "coin" : roll < 0.55 ? "warning" : "crate";
 
     if (type === "coin") {
-      const size = 22;
+      const size = 42;
       s.obstacles.push({
         type,
         x: s.canvasWidth + size,
@@ -252,7 +259,7 @@ export function EndlessRunnerGame() {
 
     // bounding box karakter (sedikit lebih kecil dari sprite biar fair)
     const characterX = 70;
-    const characterHeight = cfg.characterSize;
+    const characterHeight = getCharacterHeight(s.canvasWidth);
     const characterWidth = characterHeight * 0.72;
     const characterBox = {
       x: characterX + characterWidth * 0.18,
@@ -349,7 +356,7 @@ export function EndlessRunnerGame() {
     const c = s.character;
     const frame = c.isJumping && assets.jumpFrame ? assets.jumpFrame : assets.runFrames[c.frameIndex];
     if (frame) {
-      const height = GAME_CONFIG.characterSize;
+      const height = getCharacterHeight(s.canvasWidth);
       const width = height * (frame.width / frame.height);
       const characterX = 70;
       const characterY = s.groundY - height + c.y;
@@ -445,13 +452,9 @@ export function EndlessRunnerGame() {
   return (
     <div
       ref={containerRef}
-      className="relative mx-auto w-full max-w-4xl select-none overflow-hidden rounded-2xl border border-white/10 bg-[#050b1a] shadow-2xl"
+      className="relative mx-auto w-full select-none overflow-hidden rounded-[28px] border-[6px] border-[#0a1330] bg-[#050b1a] shadow-[0_25px_60px_-15px_rgba(10,19,48,0.55)]"
     >
       <canvas ref={canvasRef} className="block w-full touch-none" onPointerDown={jump} />
-
-      <div className="pointer-events-none absolute left-3 top-3 rounded-full bg-black/40 px-3 py-1 text-[10px] font-medium uppercase tracking-wide text-blue-100/70">
-        GitReady Runner
-      </div>
 
       {phase === "loading" && (
         <div className="absolute inset-0 flex items-center justify-center bg-[#050b1a]/90 text-sm font-medium text-blue-100">
