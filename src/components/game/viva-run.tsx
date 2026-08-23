@@ -5,6 +5,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 
 import {
+  AUDIO_PATHS,
   BACKGROUND_IMAGE_PATH,
   GAME_CONFIG,
   JUMP_FRAME_PATH,
@@ -62,6 +63,16 @@ function getCharacterHeight(canvasWidth: number): number {
     : GAME_CONFIG.characterSize;
 }
 
+// Clone node biar sfx yang overlap (mis. lompat 2x cepat) nggak saling motong.
+function playSfx(base: HTMLAudioElement | undefined, muted: boolean) {
+  if (!base || muted) return;
+  const instance = base.cloneNode(true) as HTMLAudioElement;
+  instance.volume = base.volume;
+  instance.play().catch(() => {
+    // browser mungkin nge-block autoplay sebelum ada interaksi user — aman diabaikan
+  });
+}
+
 function createInitialState(): GameState {
   return {
     character: { y: 0, velocityY: 0, isJumping: false, frameIndex: 0, frameTimer: 0 },
@@ -91,12 +102,29 @@ export function EndlessRunnerGame() {
 
   const stateRef = useRef<GameState>(createInitialState());
 
+  const audioRef = useRef<{
+    bgm: HTMLAudioElement;
+    jump: HTMLAudioElement;
+    coin: HTMLAudioElement;
+    hit: HTMLAudioElement;
+    gameOver: HTMLAudioElement;
+  } | null>(null);
+
   const [phase, setPhase] = useState<GamePhase>("loading");
   const [finalScore, setFinalScore] = useState(0);
   const [highScore, setHighScore] = useState(0);
+  const [isMuted, setIsMuted] = useState(false);
 
   const phaseRef = useRef<GamePhase>("loading");
   const highScoreRef = useRef(0);
+  const isMutedRef = useRef(false);
+
+  useEffect(() => {
+    isMutedRef.current = isMuted;
+    if (audioRef.current) {
+      audioRef.current.bgm.muted = isMuted;
+    }
+  }, [isMuted]);
 
   useEffect(() => {
     phaseRef.current = phase;
@@ -120,6 +148,30 @@ export function EndlessRunnerGame() {
 
         if (cancelled) return;
         assetsRef.current = { runFrames, background, jumpFrame };
+
+        // Audio bersifat opsional: kalau file belum ada / gagal load, game tetap jalan tanpa suara.
+        const bgm = new Audio(AUDIO_PATHS.bgm);
+        bgm.loop = true;
+        bgm.volume = GAME_CONFIG.bgmVolume;
+        bgm.preload = "auto";
+
+        const jumpSfx = new Audio(AUDIO_PATHS.jump);
+        jumpSfx.volume = GAME_CONFIG.sfxVolume;
+        jumpSfx.preload = "auto";
+
+        const coinSfx = new Audio(AUDIO_PATHS.coin);
+        coinSfx.volume = GAME_CONFIG.sfxVolume;
+        coinSfx.preload = "auto";
+
+        const hitSfx = new Audio(AUDIO_PATHS.hit);
+        hitSfx.volume = GAME_CONFIG.sfxVolume;
+        hitSfx.preload = "auto";
+
+        const gameOverSfx = new Audio(AUDIO_PATHS.gameOver);
+        gameOverSfx.volume = GAME_CONFIG.sfxVolume;
+        gameOverSfx.preload = "auto";
+
+        audioRef.current = { bgm, jump: jumpSfx, coin: coinSfx, hit: hitSfx, gameOver: gameOverSfx };
 
         try {
           const stored = Number(localStorage.getItem(GAME_CONFIG.highScoreStorageKey) ?? 0);
@@ -204,6 +256,12 @@ export function EndlessRunnerGame() {
     const finalScoreValue = Math.floor(s.score);
     setFinalScore(finalScoreValue);
 
+    if (audioRef.current) {
+      audioRef.current.bgm.pause();
+      audioRef.current.bgm.currentTime = 0;
+      playSfx(audioRef.current.gameOver, isMutedRef.current);
+    }
+
     if (finalScoreValue > highScoreRef.current) {
       highScoreRef.current = finalScoreValue;
       setHighScore(finalScoreValue);
@@ -281,7 +339,9 @@ export function EndlessRunnerGame() {
         if (obstacle.type === "coin") {
           s.score += cfg.coinScore;
           obstacle.passed = true;
+          playSfx(audioRef.current?.coin, isMutedRef.current);
         } else {
+          playSfx(audioRef.current?.hit, isMutedRef.current);
           endGame();
           return;
         }
@@ -419,6 +479,13 @@ export function EndlessRunnerGame() {
     if (phaseRef.current === "running" || !assetsRef.current) return;
     resetGame();
     setPhase("running");
+
+    if (audioRef.current && !isMutedRef.current) {
+      audioRef.current.bgm.currentTime = 0;
+      audioRef.current.bgm.play().catch(() => {
+        // autoplay bisa diblokir browser sebelum ada interaksi user — aman diabaikan
+      });
+    }
   }, [resetGame]);
 
   const jump = useCallback(() => {
@@ -434,6 +501,7 @@ export function EndlessRunnerGame() {
     if (!c.isJumping) {
       c.isJumping = true;
       c.velocityY = GAME_CONFIG.jumpForce;
+      playSfx(audioRef.current?.jump, isMutedRef.current);
     }
   }, [startGame]);
 
@@ -455,6 +523,18 @@ export function EndlessRunnerGame() {
       className="relative mx-auto w-full select-none overflow-hidden rounded-[28px] border-[6px] border-[#0a1330] bg-[#050b1a] shadow-[0_25px_60px_-15px_rgba(10,19,48,0.55)]"
     >
       <canvas ref={canvasRef} className="block w-full touch-none" onPointerDown={jump} />
+
+      <button
+        type="button"
+        onClick={(event) => {
+          event.stopPropagation();
+          setIsMuted((prev) => !prev);
+        }}
+        aria-label={isMuted ? "Aktifkan suara" : "Matikan suara"}
+        className="absolute right-3 top-3 flex h-8 w-8 items-center justify-center rounded-full bg-black/40 text-sm text-blue-100/80 transition-colors hover:bg-black/60 hover:text-white"
+      >
+        {isMuted ? "🔇" : "🔊"}
+      </button>
 
       {phase === "loading" && (
         <div className="absolute inset-0 flex items-center justify-center bg-[#050b1a]/90 text-sm font-medium text-blue-100">

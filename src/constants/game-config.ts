@@ -20,6 +20,17 @@ export const JUMP_FRAME_PATH: string | null = null;
 // Taruh file background di: public/images/game-background.png
 export const BACKGROUND_IMAGE_PATH = "/images/background.png";
 
+// ==== AUDIO ====
+// Taruh file-file ini di folder public/audio/. Format .mp3 atau .wav sama-sama oke.
+// Kalau salah satu file belum ada / gagal dimuat, game tetap jalan tanpa suara itu
+// (nggak bikin game error/nge-block).
+export const AUDIO_PATHS = {
+  bgm: "/audio/bgm.mp3",
+  jump: "/audio/jump.mp3",
+  coin: "/audio/coin.mp3",
+  hit: "/audio/hit.mp3",
+};
+
 // ==== KONFIGURASI GAMEPLAY (bebas kamu tuning) ====
 export const GAME_CONFIG = {
   canvasHeight: 620, // tinggi area game (px), lebar mengikuti container
@@ -38,6 +49,8 @@ export const GAME_CONFIG = {
   scorePerSecond: 10,
   coinScore: 25,
   highScoreStorageKey: "gitready-runner-highscore",
+  bgmVolume: 0.35,
+  sfxVolume: 0.65,
 } as const;
 
 export type ObstacleType = "crate" | "warning" | "coin";
