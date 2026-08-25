@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 
+import { GitWorkflowSimulator } from "@/components/git/GitWorkflowSim";
 import { EndlessRunnerGame } from "@/components/game/viva-run";
 import { Footer } from "@/components/footer";
 
@@ -16,6 +17,13 @@ export default function Home() {
 
       <section className="px-6 pt-16 pb-24 sm:px-12 lg:px-16">
         <div className="mx-auto max-w-7xl">
+          <h2 className="mb-6 bg-gradient-to-r from-[#2788CE] to-[#0054A5] bg-clip-text text-3xl font-extrabold uppercase tracking-wide text-transparent sm:text-4xl">
+            Git Workflow Simulator
+          </h2>
+          <GitWorkflowSimulator />
+        </div>
+
+        <div className="mx-auto max-w-7xl mt-20 sm:mt-24 lg:mt-28">
           <h2 className="mb-6 bg-gradient-to-r from-[#2788CE] to-[#0054A5] bg-clip-text text-3xl font-extrabold uppercase tracking-wide text-transparent sm:text-4xl">
             Viva Run
           </h2>
