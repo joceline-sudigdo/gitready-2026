@@ -29,14 +29,15 @@ export const AUDIO_PATHS = {
   jump: "/audio/jump.mp3",
   coin: "/audio/coin.mp3",
   hit: "/audio/hit.mp3",
+  gameOver: "/audio/game-over.mp3",
 };
 
 // ==== KONFIGURASI GAMEPLAY (bebas kamu tuning) ====
 export const GAME_CONFIG = {
   canvasHeight: 620, // tinggi area game (px), lebar mengikuti container
   groundHeightRatio: 0.14, // porsi tinggi canvas yang jadi "tanah"
-  gravity: 0.8,
-  jumpForce: -20.5,
+  gravity: 0.9,
+  jumpForce: -15.5,
   baseSpeed: 6,
   maxSpeed: 14,
   speedIncreasePerSecond: 0.045, // makin lama makin cepat
