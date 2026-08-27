@@ -15,13 +15,14 @@ const poppins = Poppins({
     "800",
     "900",
   ],
-    variable: "--font-poppins",
-    display: "swap",
+  variable: "--font-poppins",
+  display: "swap",
 });
 
 export const metadata: Metadata = {
-  title: "GitReady 2026",
-  description: "GitReady Workshop Landing Page",
+  title: "GitReady — Workshop Git & GitHub",
+  description:
+    "Belajar Git & GitHub dari nol: workflow simulator interaktif, mini game, dan sesi bareng instruktur.",
 };
 
 export default function RootLayout({
@@ -30,10 +31,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="id">
       <body className={poppins.className}>
         {children}
       </body>
     </html>
   );
 }
+
