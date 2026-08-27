@@ -36,7 +36,7 @@ export function HeroSection() {
 
       <HeroNavbar />
 
-      <div className="relative mx-auto grid max-w-[1280px] gap-14 px-6 pb-20 pt-14 sm:px-8 lg:grid-cols-2 lg:items-center lg:gap-8 lg:px-10 lg:pb-16 lg:pt-16">
+      <div className="relative mx-auto grid max-w-[1280px] gap-10 px-6 pb-14 pt-8 sm:px-8 lg:grid-cols-2 lg:items-center lg:gap-8 lg:px-10 lg:pb-12 lg:pt-10">
         {/* Left content */}
         <motion.div
           initial="hidden"
@@ -47,9 +47,9 @@ export function HeroSection() {
           <motion.span
             variants={fadeUp}
             transition={{ duration: 0.5 }}
-            className="mb-5 inline-flex items-center gap-1.5 rounded-full bg-[#EEF5FF] px-3.5 py-1.5 text-[12.5px] font-medium text-[#2563EB]"
+            className="mb-5 inline-flex items-center gap-1.5 rounded-full bg-[#EEF5FF] px-3.5 py-1.5 text-[12.5px] font-medium text-[#0054A5]"
           >
-            <Sparkles className="h-3.5 w-3.5" aria-hidden="true" />
+            <Sparkles className="h-3.5 w-3.5 text-[#2788CE]" aria-hidden="true" />
             Presented by BNCC Learning &amp; Training
           </motion.span>
 
@@ -60,7 +60,10 @@ export function HeroSection() {
           >
             GitReady
             <br />
-            with <span className="text-[#2563EB]">LnT</span>
+            with{" "}
+            <span className="bg-gradient-to-r from-[#2788CE] to-[#0054A5] bg-clip-text text-transparent">
+              LnT
+            </span>
           </motion.h1>
 
           <motion.p
@@ -79,11 +82,12 @@ export function HeroSection() {
           >
             <a
               href="#daftar"
-              className="group inline-flex h-[46px] items-center gap-2 rounded-[9px] bg-[#2563EB] px-6 text-[14px] font-semibold text-white shadow-md shadow-blue-500/25 transition-all hover:-translate-y-0.5 hover:bg-[#1D4ED8] hover:shadow-lg"
+              className="group inline-flex h-[46px] items-center gap-2 rounded-[9px] bg-gradient-to-r from-[#2788CE] to-[#0054A5] px-6 text-[14px] font-semibold text-white shadow-md shadow-blue-500/25 transition-all hover:-translate-y-0.5 hover:from-[#217DBE] hover:to-[#00478E] hover:shadow-lg"
             >
               Daftar Sekarang
               <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
             </a>
+
             <a
               href="#tentang"
               className="inline-flex h-[46px] items-center rounded-[9px] border border-[#BFD2F5] bg-transparent px-6 text-[14px] font-semibold text-[#374151] transition-all hover:-translate-y-0.5 hover:bg-white"

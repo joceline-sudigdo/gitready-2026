@@ -46,21 +46,17 @@ export function HeroNavbar() {
           ))}
         </ul>
 
-        <div className="hidden items-center gap-3 lg:flex">
-          <a
-            href="#masuk"
-            className="rounded-[9px] px-4 py-2.5 text-[13.5px] font-semibold text-[#374151] transition-colors hover:text-[#2563EB]"
-          >
-            Masuk
-          </a>
+        {/* Desktop CTA */}
+        <div className="hidden items-center lg:flex">
           <a
             href="#daftar"
-            className="rounded-[9px] bg-[#2563EB] px-5 py-2.5 text-[13.5px] font-semibold text-white shadow-sm shadow-blue-500/20 transition-all hover:-translate-y-0.5 hover:bg-[#1D4ED8] hover:shadow-md"
+            className="rounded-[9px] bg-gradient-to-r from-[#2788CE] to-[#0054A5] px-5 py-2.5 text-[13.5px] font-semibold text-white shadow-sm shadow-blue-500/20 transition-all hover:-translate-y-0.5 hover:from-[#217DBE] hover:to-[#00478E] hover:shadow-md"
           >
             Daftar Sekarang
           </a>
         </div>
 
+        {/* Mobile Menu Button */}
         <button
           type="button"
           onClick={() => setIsMenuOpen((open) => !open)}
@@ -68,7 +64,11 @@ export function HeroNavbar() {
           aria-label={isMenuOpen ? "Tutup menu" : "Buka menu"}
           className="flex h-10 w-10 items-center justify-center rounded-lg text-[#111827] lg:hidden"
         >
-          {isMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+          {isMenuOpen ? (
+            <X className="h-5 w-5" />
+          ) : (
+            <Menu className="h-5 w-5" />
+          )}
         </button>
       </nav>
 
@@ -94,16 +94,13 @@ export function HeroNavbar() {
                 </li>
               ))}
             </ul>
-            <div className="flex flex-col gap-2 border-t border-[#EEF5FF] px-6 py-4">
-              <a
-                href="#masuk"
-                className="rounded-[9px] border border-[#D7E0E8] px-4 py-2.5 text-center text-[13.5px] font-semibold text-[#374151]"
-              >
-                Masuk
-              </a>
+
+            {/* Mobile CTA */}
+            <div className="border-t border-[#EEF5FF] px-6 py-4">
               <a
                 href="#daftar"
-                className="rounded-[9px] bg-[#2563EB] px-4 py-2.5 text-center text-[13.5px] font-semibold text-white"
+                onClick={() => setIsMenuOpen(false)}
+                className="block rounded-[9px] bg-[#2563EB] px-4 py-2.5 text-center text-[13.5px] font-semibold text-white"
               >
                 Daftar Sekarang
               </a>

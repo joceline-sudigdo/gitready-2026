@@ -24,7 +24,7 @@ export function HeroFeatures() {
           transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
           className="flex flex-col items-center gap-2 text-center sm:items-start sm:text-left"
         >
-          <span className="flex h-9 w-9 items-center justify-center rounded-[10px] bg-[#EEF5FF] text-[#2563EB]">
+          <span className="flex h-9 w-9 items-center justify-center rounded-[10px] bg-[#EEF5FF] text-[#2788CE]">
             <Icon className="h-[18px] w-[18px]" aria-hidden="true" />
           </span>
           <span className="text-[12px] font-medium leading-tight text-[#374151] sm:text-[13px]">
