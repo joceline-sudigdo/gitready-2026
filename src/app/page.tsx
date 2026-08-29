@@ -1,11 +1,7 @@
-<<<<<<< HEAD
 import { HeroSection } from "@/components/hero/hero-section";
 import { EventDetailsSection } from "@/components/detail/event-details-section";
-=======
 import type { Metadata } from "next";
-
 import { GitWorkflowSimulator } from "@/components/git/GitWorkflowSim";
->>>>>>> feat-joce
 import { EndlessRunnerGame } from "@/components/game/viva-run";
 import { Footer } from "@/components/footer";
 
