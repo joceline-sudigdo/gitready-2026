@@ -1,5 +1,6 @@
 import { HeroSection } from "@/components/hero/hero-section";
 import { EventDetailsSection } from "@/components/detail/event-details-section";
+import { GuidebookSection } from "@/components/guidebook/guidebook-section";
 import { GitWorkflowSimulator } from "@/components/git/GitWorkflowSim";
 import { EndlessRunnerGame } from "@/components/game/viva-run";
 import { Footer } from "@/components/footer";
@@ -12,6 +13,7 @@ export default function Home() {
       <main className="flex min-h-screen flex-col bg-[#DCE3ED]">
         <HeroSection />
         <EventDetailsSection />
+        <GuidebookSection />
 
         <section className="px-6 pb-24 pt-16 sm:px-12 lg:px-16">
           <div className="mx-auto max-w-7xl">
