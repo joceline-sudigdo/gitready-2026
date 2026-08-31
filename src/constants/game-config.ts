@@ -18,7 +18,7 @@ export const JUMP_FRAME_PATH: string | null = null;
 
 // ==== BACKGROUND ====
 // Taruh file background di: public/images/game-background.png
-export const BACKGROUND_IMAGE_PATH = "/images/background.png";
+export const BACKGROUND_IMAGE_PATH = "/images/background2.png";
 
 // ==== AUDIO ====
 // Taruh file-file ini di folder public/audio/. Format .mp3 atau .wav sama-sama oke.

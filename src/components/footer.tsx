@@ -2,6 +2,7 @@
 "use client";
 
 import type { ElementType } from "react";
+import Image from "next/image";
 import { motion } from "framer-motion";
 import { Globe, Phone } from "lucide-react";
 
@@ -57,11 +58,26 @@ export function Footer() {
     >
       <div className="mx-auto max-w-6xl">
         {/* Judul tengah */}
-        <h2 className="text-center text-3xl font-extrabold text-white sm:text-4xl">
-          GitReady
-        </h2>
+        <div className="flex justify-left">
+          <Image
+            src="/images/logo.png"
+            alt="GitReady"
+            width={180}
+            height={48}
+            className="h-10 w-auto sm:h-12"
+            priority
+          />
+        </div>
 
         <div className="mt-10 grid gap-10 sm:grid-cols-2 lg:grid-cols-3">
+          {/* Brand desc */}
+          <div className="space-y-3">
+            <p className="max-w-xs text-sm text-blue-100/70">
+              Workshop belajar Git & GitHub dari nol sampai terbiasa dengan alur kerja
+              kolaboratif tim development.
+            </p>
+          </div>
+
           {/* Narahubung */}
           <div className="space-y-2">
             <p className="text-sm font-semibold uppercase tracking-wide text-blue-200/70">
@@ -78,14 +94,6 @@ export function Footer() {
               <Phone className="h-4 w-4" aria-hidden="true" />
               {CONTACT_PERSON.phone}
             </a>
-          </div>
-
-          {/* Brand desc */}
-          <div className="space-y-3">
-            <p className="max-w-xs text-sm text-blue-100/70">
-              Workshop belajar Git & GitHub dari nol sampai terbiasa dengan alur kerja
-              kolaboratif tim development.
-            </p>
           </div>
 
           {/* Media Sosial */}
