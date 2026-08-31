@@ -100,8 +100,8 @@ export function Footer() {
       className="mt-auto rounded-t-[2.5rem] bg-[#0B3B7A] px-6 py-14 sm:px-12 lg:px-16"
     >
       <div className="mx-auto max-w-6xl">
-        {/* Logo */}
-        <div className="flex justify-start">
+        {/* Logo (hidden di mobile) */}
+        <div className="hidden justify-start sm:flex">
           <Image
             src="/images/logo.png"
             alt="GitReady"
@@ -124,10 +124,10 @@ export function Footer() {
 
           {/* Narahubung */}
           <div className="space-y-2">
-            <p className="text-sm font-semibold uppercase tracking-wide text-blue-200/70">
-              Contact Person:
+            <p className="text-lg font-semibold uppercase tracking-wide text-white">
+              Contact Person
             </p>
-            <p className="text-lg font-semibold text-white">{CONTACT_PERSON.name}</p>
+            <p className="text-base font-semibold text-sm text-blue-100/80 transition-colors hover:text-white cursor-pointer">{CONTACT_PERSON.name}</p>
             <a
               href={CONTACT_PERSON.whatsappUrl}
               target="_blank"

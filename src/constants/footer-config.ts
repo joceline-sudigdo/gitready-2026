@@ -60,7 +60,7 @@ export const SOCIAL_LINKS: SocialLink[] = [
 /**
  * 12. Footer
  */
-export const FOOTER_COPYRIGHT = "© 2025 BNCC Learning & Training. Hak Cipta Dilindungi.";
+export const FOOTER_COPYRIGHT = "© 2026 BNCC Learning & Training. Hak Cipta Dilindungi.";
 
 // Existing constant kept per guideline section 3 (link pendaftaran)
 export const GOOGLE_FORM_URL = "https://forms.gle/xxxxxxx";
