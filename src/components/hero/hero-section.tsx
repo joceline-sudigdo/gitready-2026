@@ -104,12 +104,13 @@ export function HeroSection() {
             }}
             className="text-[42px] font-extrabold leading-[1.02] tracking-tight text-[#111827] sm:text-[54px] lg:text-[64px]"
           >
-            GitReady 2.0
+            <span className="bg-gradient-to-r from-[#2788CE] to-[#0054A5] bg-clip-text text-transparent">
+
+              GitReady 2.0
+            </span>
             <br />
             <span className="text-[36px] sm:text-[46px] lg:text-[54px]">
-              <span className="bg-gradient-to-r from-[#2788CE] to-[#0054A5] bg-clip-text text-transparent">
-                Future Career Preparation
-              </span>
+              Future Career Preparation
               <br />
               Through Digital Portfolio
             </span>
