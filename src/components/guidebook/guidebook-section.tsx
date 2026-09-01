@@ -30,8 +30,7 @@ export function GuidebookSection() {
             transition={{ duration: 0.5, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
             className="mx-auto mt-3 max-w-2xl text-[15px] leading-relaxed text-[#405575] sm:text-[16px]"
           >
-            Pelajari materi workshop dan rangkuman alur kerja Git &amp; GitHub secara lengkap.
-            Unduh buku panduan resmi untuk mendukung proses belajarmu.
+            Buku panduan merupakan media informasi yang disediakan sebagai pedoman bagi peserta sebelum mengikuti workshop GitReady 2.0. Buku ini memuat informasi umum mengenai workshop, Frequently Asked Questions (FAQ), tata cara pendaftaran, profil pembicara, serta panduan instalasi dan konfigurasi Git & GitHub. Dengan adanya buku panduan ini, peserta diharapkan dapat mempersiapkan perangkat dan memahami informasi yang diperlukan sebelum workshop dimulai.
           </motion.p>
         </div>
 

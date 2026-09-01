@@ -1,11 +1,10 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { ArrowRight, ChevronDown, Sparkles } from "lucide-react";
+import { Sparkles } from "lucide-react";
 
 import { GitVisualization } from "@/components/hero/git-visualization";
 import { HeroFeatures } from "@/components/hero/hero-features";
-import { SocialProof } from "@/components/hero/social-proof";
 
 const fadeUp = {
   hidden: { opacity: 0, y: 20 },
@@ -16,7 +15,7 @@ export function HeroSection() {
   return (
     <section
       id="top"
-      className="relative overflow-hidden bg-[#D7E0E8] pt-[70px]"
+      className="relative overflow-hidden bg-[#D7E0E8] pt-24 sm:pt-28 lg:pt-50"
     >
       {/* Background */}
       <div
@@ -58,7 +57,7 @@ export function HeroSection() {
         </svg>
       </div>
 
-      <div className="relative mx-auto grid max-w-[1280px] gap-10 px-6 pb-14 pt-8 sm:px-8 lg:grid-cols-2 lg:items-center lg:gap-8 lg:px-10 lg:pb-12 lg:pt-10">
+      <div className="relative mx-auto grid max-w-[1280px] gap-10 px-6 pb-14 pt-8 sm:px-8 lg:grid-cols-2 lg:items-center lg:gap-8 lg:px-10 lg:pb-12 lg:pt-20">
         {/* Left content */}
         <motion.div
           initial="hidden"
@@ -72,10 +71,21 @@ export function HeroSection() {
           }}
           className="relative z-10 flex flex-col items-start"
         >
+          {/* Invisible spacer untuk mempertahankan jarak dari navbar */}
           <motion.span
             variants={fadeUp}
             transition={{ duration: 0.5 }}
-            className="mb-5 inline-flex items-center gap-1.5 rounded-full bg-[#EEF5FF] px-3.5 py-1.5 text-[12.5px] font-medium text-[#0054A5]"
+            className="mb-5 block h-[100px] w-full sm:h-[110px] lg:h-[120px]"
+            aria-hidden="true"
+          >
+            space
+          </motion.span>
+
+          {/* Presented by */}
+          <motion.span
+            variants={fadeUp}
+            transition={{ duration: 0.5 }}
+            className="mb-5 inline-flex items-center gap-1.5 rounded-full border border-white/60 bg-white/40 px-3.5 py-1.5 text-[12.5px] font-medium text-[#0054A5] shadow-[0_8px_30px_rgba(37,99,235,0.08)] backdrop-blur-md backdrop-saturate-150"
           >
             <Sparkles
               className="h-3.5 w-3.5 text-[#2788CE]"
@@ -85,6 +95,7 @@ export function HeroSection() {
             Presented by BNCC Learning &amp; Training
           </motion.span>
 
+          {/* Heading */}
           <motion.h1
             variants={fadeUp}
             transition={{
@@ -93,51 +104,33 @@ export function HeroSection() {
             }}
             className="text-[42px] font-extrabold leading-[1.02] tracking-tight text-[#111827] sm:text-[54px] lg:text-[64px]"
           >
-            GitReady
+            GitReady 2.0
             <br />
-            with{" "}
-            <span className="bg-gradient-to-r from-[#2788CE] to-[#0054A5] bg-clip-text text-transparent">
-              LnT
+            <span className="text-[36px] sm:text-[46px] lg:text-[54px]">
+              <span className="bg-gradient-to-r from-[#2788CE] to-[#0054A5] bg-clip-text text-transparent">
+                Future Career Preparation
+              </span>
+              <br />
+              Through Digital Portfolio
             </span>
           </motion.h1>
 
+          {/* Description */}
           <motion.p
             variants={fadeUp}
             transition={{
               duration: 0.6,
               delay: 0.05,
             }}
-            className="mt-5 max-w-[420px] text-[16px] leading-[1.6] text-[#405575]"
+            className="mt-5 max-w-[460px] text-[16px] leading-[1.6] text-[#405575]"
           >
-            Pelatihan Git &amp; GitHub untuk meningkatkan kolaborasi dalam
-            proyek pengembangan software secara profesional.
+            Workshop hybrid yang membekali mahasiswa dengan keterampilan Git
+            &amp; GitHub serta digital portfolio untuk berkolaborasi dalam
+            proyek dan mempersiapkan diri menghadapi dunia industri secara
+            profesional.
           </motion.p>
 
-          <motion.div
-            variants={fadeUp}
-            transition={{
-              duration: 0.5,
-              delay: 0.15,
-            }}
-            className="mt-8 flex flex-wrap items-center gap-3"
-          >
-            <a
-              href="#daftar"
-              className="group inline-flex h-[46px] items-center gap-2 rounded-[9px] bg-gradient-to-r from-[#2788CE] to-[#0054A5] px-6 text-[14px] font-semibold text-white shadow-md shadow-blue-500/25 transition-all hover:-translate-y-0.5 hover:from-[#217DBE] hover:to-[#00478E] hover:shadow-lg"
-            >
-              Daftar Sekarang
-
-              <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
-            </a>
-
-            <a
-              href="#tentang"
-              className="inline-flex h-[46px] items-center rounded-[9px] border border-[#BFD2F5] bg-transparent px-6 text-[14px] font-semibold text-[#374151] transition-all hover:-translate-y-0.5 hover:bg-white"
-            >
-              Pelajari Lebih Lanjut
-            </a>
-          </motion.div>
-
+          {/* Hero Features */}
           <motion.div
             variants={fadeUp}
             transition={{
@@ -147,17 +140,6 @@ export function HeroSection() {
             className="mt-10 w-full"
           >
             <HeroFeatures />
-          </motion.div>
-
-          <motion.div
-            variants={fadeUp}
-            transition={{
-              duration: 0.5,
-              delay: 0.25,
-            }}
-            className="mt-8 w-full"
-          >
-            <SocialProof />
           </motion.div>
         </motion.div>
 
@@ -181,36 +163,6 @@ export function HeroSection() {
           <GitVisualization />
         </motion.div>
       </div>
-
-      {/* Scroll indicator */}
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{
-          duration: 0.6,
-          delay: 0.8,
-        }}
-        className="relative z-10 flex flex-col items-center gap-2 pb-10"
-      >
-        <p className="text-[12.5px] font-medium text-[#6B7280]">
-          Scroll untuk mengeksplorasi
-        </p>
-
-        <motion.span
-          animate={{ y: [0, 5, 0] }}
-          transition={{
-            duration: 1.8,
-            repeat: Infinity,
-            ease: "easeInOut",
-          }}
-          className="flex h-8 w-8 items-center justify-center rounded-full border border-[#C2CDD6] text-[#6B7280]"
-        >
-          <ChevronDown
-            className="h-4 w-4"
-            aria-hidden="true"
-          />
-        </motion.span>
-      </motion.div>
     </section>
   );
 }

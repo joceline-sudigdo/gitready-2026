@@ -11,7 +11,7 @@ function BNCCLogo({ isScrolled }: { isScrolled: boolean }) {
   return (
     <a href="#top" className="flex items-center" aria-label="BNCC Beranda">
       <Image
-        src={isScrolled ? "/images/BNCC_White.png" : "/images/BNCC_Black.png"}
+        src={isScrolled ? "/images/GitReady-Blue.png" : "/images/BNCC_Blue.png"}
         alt="BNCC"
         width={130}
         height={32}
@@ -72,8 +72,10 @@ export function HeroNavbar() {
         aria-label="Navigasi utama"
         className="mx-auto flex h-[70px] max-w-[1280px] items-center justify-between px-6 sm:px-8 lg:px-10"
       >
+        {/* Kiri: Logo */}
         <BNCCLogo isScrolled={isScrolled} />
 
+        {/* Kanan: Menu (desktop) */}
         <ul className="hidden items-center gap-8 lg:flex">
           {NAV_LINKS.map((link) => (
             <li key={link.label}>
@@ -90,20 +92,7 @@ export function HeroNavbar() {
           ))}
         </ul>
 
-        {/* Desktop CTA */}
-        <div className="hidden items-center lg:flex">
-          <a
-            href="#daftar"
-            className={`rounded-[9px] px-5 py-2.5 text-[13.5px] font-semibold transition-all duration-300 hover:-translate-y-0.5 ${isScrolled
-              ? "border border-white/80 bg-[#0B3B7A] text-white shadow-sm hover:border-white hover:bg-white hover:text-[#0B3B7A]"
-              : "border border-transparent bg-gradient-to-r from-[#2788CE] to-[#0054A5] text-white shadow-sm shadow-blue-500/20 hover:from-[#217DBE] hover:to-[#00478E] hover:shadow-md"
-              }`}
-          >
-            Daftar Sekarang
-          </a>
-        </div>
-
-        {/* Mobile Menu Button */}
+        {/* Mobile Menu Button (kanan) */}
         <button
           type="button"
           onClick={() => setIsMenuOpen((open) => !open)}
@@ -150,25 +139,6 @@ export function HeroNavbar() {
                 </li>
               ))}
             </ul>
-
-            {/* Mobile CTA */}
-            <div
-              className={`border-t px-6 py-4 transition-colors duration-300 ${isScrolled
-                ? "border-white/10"
-                : "border-black/5"
-                }`}
-            >
-              <a
-                href="#daftar"
-                onClick={() => setIsMenuOpen(false)}
-                className={`block rounded-[9px] px-4 py-2.5 text-center text-[13.5px] font-semibold transition-all duration-300 ${isScrolled
-                  ? "border border-white/80 bg-[#0B3B7A] text-white hover:bg-white hover:text-[#0B3B7A]"
-                  : "bg-[#2563EB] text-white hover:bg-[#1d4ed8]"
-                  }`}
-              >
-                Daftar Sekarang
-              </a>
-            </div>
           </motion.div>
         ) : null}
       </AnimatePresence>
