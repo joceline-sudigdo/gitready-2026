@@ -7,23 +7,43 @@ export type EventInfoItem = {
   value: string;
 };
 
-export const EVENT_INFO: EventInfoItem[] = [
-  {
-    icon: Calendar,
-    label: "Tanggal",
-    value: "Jumat, 26 September 2025",
-  },
-  {
-    icon: Clock,
-    label: "Waktu",
-    value: "08:00 – 11:00 WIB",
-  },
-  {
-    icon: MapPin,
-    label: "Lokasi",
-    value: "Binus@Malang (Onsite)",
-  },
-];
+type EventSchedule = {
+  date: string;
+  time: string;
+  location: string;
+};
 
-// TODO: ganti dengan link Google Form asli setelah dibuat.
-export const REGISTRATION_FORM_URL = "https://forms.gle/ganti-dengan-link-gform";
+/**
+ * Satu sumber kebenaran untuk detail publik GitReady. Isi properti nullable
+ * saat informasi resmi telah tersedia; UI akan membuka CTA secara otomatis.
+ */
+export const GITREADY_EVENT = {
+  year: 2026,
+  eventSchedule: null as EventSchedule | null,
+  registrationUrl: null as string | null,
+  guidebookPath: null as string | null,
+} as const;
+
+export const EVENT_INFO: EventInfoItem[] = GITREADY_EVENT.eventSchedule
+  ? [
+      {
+        icon: Calendar,
+        label: "Tanggal",
+        value: GITREADY_EVENT.eventSchedule.date,
+      },
+      {
+        icon: Clock,
+        label: "Waktu",
+        value: GITREADY_EVENT.eventSchedule.time,
+      },
+      {
+        icon: MapPin,
+        label: "Lokasi",
+        value: GITREADY_EVENT.eventSchedule.location,
+      },
+    ]
+  : [
+      { icon: Calendar, label: "Tanggal", value: "Akan diumumkan" },
+      { icon: Clock, label: "Waktu", value: "Akan diumumkan" },
+      { icon: MapPin, label: "Lokasi", value: "Akan diumumkan" },
+    ];

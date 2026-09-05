@@ -2,172 +2,178 @@
 
 import { useEffect, useState } from "react";
 import Image from "next/image";
-import { AnimatePresence, motion } from "framer-motion";
+import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { Menu, X } from "lucide-react";
 
+import { RegistrationCta } from "@/components/hero/registration-cta";
+import { GITREADY_EVENT } from "@/constants/event-config";
 import { NAV_LINKS } from "@/constants/hero-config";
 
-function BNCCLogo({ isScrolled }: { isScrolled: boolean }) {
+function VerticalSwapText({ children, className = "" }: { children: string; className?: string }) {
   return (
-    <a href="#top" className="flex items-center" aria-label="BNCC Beranda">
-      <Image
-        src={isScrolled ? "/images/BNCC_White.png" : "/images/BNCC_Black.png"}
-        alt="BNCC"
-        width={130}
-        height={32}
-        priority
-        className="h-7 w-auto object-contain transition-all duration-300 sm:h-8"
-      />
+    <span aria-hidden="true" className={`relative block overflow-hidden ${className}`}>
+      <span className="block transition-transform duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:-translate-y-full group-focus-visible:-translate-y-full motion-reduce:transform-none">
+        {children}
+      </span>
+      <span className="absolute inset-0 translate-y-full transition-transform duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:translate-y-0 group-focus-visible:translate-y-0 motion-reduce:hidden">
+        {children}
+      </span>
+    </span>
+  );
+}
+
+function BNCCLogo({ isOnDarkSection }: { isOnDarkSection: boolean }) {
+  return (
+    <a href="#top" className="relative flex h-8 w-[130px] items-center rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-bright" aria-label="Kembali ke awal halaman">
+      <Image src="/images/BNCC_Black.png" alt="BNCC" width={642} height={185} priority className={`h-7 w-auto object-contain transition-opacity duration-300 sm:h-8 ${isOnDarkSection ? "opacity-0" : "opacity-100"}`} style={{ width: "auto" }} />
+      <Image src="/images/BNCC_White.png" alt="" width={718} height={209} priority className={`absolute left-0 h-7 w-auto object-contain transition-opacity duration-300 sm:h-8 ${isOnDarkSection ? "opacity-100" : "opacity-0"}`} style={{ width: "auto" }} />
     </a>
   );
 }
 
 export function HeroNavbar() {
-  const [isScrolled, setIsScrolled] = useState(false);
+  const [isOnDarkSection, setIsOnDarkSection] = useState(true);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const reduceMotion = useReducedMotion();
+  const registrationHref = GITREADY_EVENT.registrationUrl ?? "#daftar";
+  const navbarOnDark = isMenuOpen || isOnDarkSection;
 
   useEffect(() => {
-    const handleScroll = () => {
-      const scrollPos = Math.max(
-        window.scrollY || 0,
-        window.pageYOffset || 0,
-        document.documentElement.scrollTop || 0,
-        document.body.scrollTop || 0
-      );
+    const themedSections = Array.from(document.querySelectorAll<HTMLElement>("[data-navbar-theme]"));
+    if (!themedSections.length) return;
 
-      setIsScrolled(scrollPos > 10);
+    const probeY = 40;
+    const updateNavbarTheme = () => {
+      const currentSection = themedSections.find((section) => {
+        const bounds = section.getBoundingClientRect();
+        return bounds.top <= probeY && bounds.bottom > probeY;
+      });
+
+      if (currentSection) {
+        setIsOnDarkSection(currentSection.dataset.navbarTheme === "dark");
+      }
     };
 
-    handleScroll();
+    const bottomMargin = Math.max(window.innerHeight - probeY - 1, 0);
+    const observer = new IntersectionObserver(updateNavbarTheme, {
+      rootMargin: `-${probeY}px 0px -${bottomMargin}px 0px`,
+      threshold: 0,
+    });
 
-    window.addEventListener("scroll", handleScroll, { passive: true });
-    document.addEventListener("scroll", handleScroll, { passive: true });
-    window.addEventListener("touchmove", handleScroll, { passive: true });
-    window.addEventListener("wheel", handleScroll, { passive: true });
-
-    return () => {
-      window.removeEventListener("scroll", handleScroll);
-      document.removeEventListener("scroll", handleScroll);
-      window.removeEventListener("touchmove", handleScroll);
-      window.removeEventListener("wheel", handleScroll);
-    };
+    themedSections.forEach((section) => observer.observe(section));
+    updateNavbarTheme();
+    return () => observer.disconnect();
   }, []);
 
-  return (
-    <header
-      style={{
-        position: "fixed",
-        top: 0,
-        left: 0,
-        right: 0,
-        width: "100%",
-        zIndex: 9999,
-      }}
-      className={`fixed inset-x-0 top-0 z-[9999] w-full transition-all duration-300 ${isScrolled
-        ? "border-b border-white/10 bg-[#0B3B7A] shadow-lg shadow-black/20"
-        : "bg-[#D7E0E8]/95 backdrop-blur-md"
-        }`}
-    >
-      <nav
-        aria-label="Navigasi utama"
-        className="mx-auto flex h-[70px] max-w-[1280px] items-center justify-between px-6 sm:px-8 lg:px-10"
-      >
-        <BNCCLogo isScrolled={isScrolled} />
+  useEffect(() => {
+    if (!isMenuOpen) return;
 
-        <ul className="hidden items-center gap-8 lg:flex">
+    const previousBodyOverflow = document.body.style.overflow;
+    const previousHtmlOverflow = document.documentElement.style.overflow;
+    const closeOnEscape = (event: KeyboardEvent) => {
+      if (event.key === "Escape") setIsMenuOpen(false);
+    };
+
+    document.body.style.overflow = "hidden";
+    document.documentElement.style.overflow = "hidden";
+    window.addEventListener("keydown", closeOnEscape);
+
+    return () => {
+      document.body.style.overflow = previousBodyOverflow;
+      document.documentElement.style.overflow = previousHtmlOverflow;
+      window.removeEventListener("keydown", closeOnEscape);
+    };
+  }, [isMenuOpen]);
+
+  return (
+    <header className={`fixed inset-x-0 top-0 z-50 transition-colors duration-300 ${navbarOnDark ? "text-white" : "text-navy"}`}>
+      <nav aria-label="Navigasi utama" className="relative z-30 flex h-20 w-full items-center justify-between px-5 sm:px-8 lg:px-14">
+        <BNCCLogo isOnDarkSection={navbarOnDark} />
+        <ul className={`absolute left-1/2 hidden -translate-x-1/2 items-center gap-6 rounded-2xl border px-6 py-3 backdrop-blur-md transition-colors lg:flex ${isOnDarkSection ? "border-white/10 bg-[#061225]/45" : "border-navy/10 bg-canvas/55"}`}>
           {NAV_LINKS.map((link) => (
             <li key={link.label}>
-              <a
-                href={link.href}
-                className={`text-[13.5px] font-medium transition-colors duration-300 ${isScrolled
-                  ? "text-white/90 hover:text-white"
-                  : "text-[#374151] hover:text-[#2563EB]"
-                  }`}
-              >
-                {link.label}
+              <a href={link.href} aria-label={link.label} className="group block rounded-sm text-base font-medium leading-tight focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-bright">
+                <VerticalSwapText className="h-[1.25em] whitespace-nowrap" children={link.label} />
               </a>
             </li>
           ))}
         </ul>
-
-        {/* Desktop CTA */}
-        <div className="hidden items-center lg:flex">
-          <a
-            href="#daftar"
-            className={`rounded-[9px] px-5 py-2.5 text-[13.5px] font-semibold transition-all duration-300 hover:-translate-y-0.5 ${isScrolled
-              ? "border border-white/80 bg-[#0B3B7A] text-white shadow-sm hover:border-white hover:bg-white hover:text-[#0B3B7A]"
-              : "border border-transparent bg-gradient-to-r from-[#2788CE] to-[#0054A5] text-white shadow-sm shadow-blue-500/20 hover:from-[#217DBE] hover:to-[#00478E] hover:shadow-md"
-              }`}
-          >
-            Daftar Sekarang
-          </a>
+        <div className="hidden lg:block">
+          <RegistrationCta
+            href={registrationHref}
+            target={GITREADY_EVENT.registrationUrl ? "_blank" : undefined}
+            rel={GITREADY_EVENT.registrationUrl ? "noopener noreferrer" : undefined}
+            onDark={navbarOnDark}
+          />
         </div>
-
-        {/* Mobile Menu Button */}
         <button
           type="button"
           onClick={() => setIsMenuOpen((open) => !open)}
+          aria-controls="mobile-navigation"
           aria-expanded={isMenuOpen}
           aria-label={isMenuOpen ? "Tutup menu" : "Buka menu"}
-          className={`flex h-10 w-10 items-center justify-center rounded-lg transition-colors duration-300 lg:hidden ${isScrolled
-            ? "text-white hover:bg-white/10"
-            : "text-[#111827] hover:bg-black/5"
-            }`}
+          className={`flex size-11 items-center justify-center border transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-bright lg:hidden ${navbarOnDark ? "border-white/25 hover:bg-white/10" : "border-navy/20 hover:bg-navy/10"}`}
         >
-          {isMenuOpen ? (
-            <X className="h-5 w-5" />
-          ) : (
-            <Menu className="h-5 w-5" />
-          )}
+          {isMenuOpen ? <X className="size-7" strokeWidth={1.75} /> : <Menu className="size-7" strokeWidth={1.75} />}
         </button>
       </nav>
 
       <AnimatePresence>
         {isMenuOpen ? (
           <motion.div
-            initial={{ height: 0, opacity: 0 }}
-            animate={{ height: "auto", opacity: 1 }}
-            exit={{ height: 0, opacity: 0 }}
-            transition={{ duration: 0.25, ease: "easeInOut" }}
-            className={`overflow-hidden border-t transition-colors duration-300 lg:hidden ${isScrolled
-              ? "border-white/10 bg-[#0B3B7A]"
-              : "border-black/5 bg-[#D7E0E8]"
-              }`}
+            id="mobile-navigation"
+            initial={reduceMotion ? false : { clipPath: "inset(0 0 100% 0)" }}
+            animate={{ clipPath: "inset(0 0 0% 0)" }}
+            exit={{ clipPath: "inset(0 0 100% 0)" }}
+            transition={{ duration: reduceMotion ? 0 : 0.65, ease: [0.16, 1, 0.3, 1] }}
+            className="fixed inset-0 z-10 min-h-[100dvh] overflow-y-auto bg-[#020814] text-white lg:hidden"
           >
-            <ul className="flex flex-col gap-1 px-6 py-4">
-              {NAV_LINKS.map((link) => (
-                <li key={link.label}>
-                  <a
-                    href={link.href}
-                    onClick={() => setIsMenuOpen(false)}
-                    className={`block rounded-lg px-2 py-2.5 text-sm font-medium transition-colors duration-300 ${isScrolled
-                      ? "text-white/90 hover:bg-white/10 hover:text-white"
-                      : "text-[#374151] hover:bg-[#F7FAFF] hover:text-[#2563EB]"
-                      }`}
-                  >
-                    {link.label}
-                  </a>
-                </li>
-              ))}
-            </ul>
+            <Image
+              src="/images/Git-Hero.png"
+              alt=""
+              fill
+              sizes="100vw"
+              className="pointer-events-none object-cover object-[60%_center] opacity-[0.12]"
+            />
+            <span aria-hidden="true" className="pointer-events-none absolute inset-0 bg-[linear-gradient(180deg,rgba(2,8,20,0.58)_0%,rgba(2,8,20,0.9)_48%,#020814_100%)]" />
 
-            {/* Mobile CTA */}
-            <div
-              className={`border-t px-6 py-4 transition-colors duration-300 ${isScrolled
-                ? "border-white/10"
-                : "border-black/5"
-                }`}
-            >
-              <a
-                href="#daftar"
-                onClick={() => setIsMenuOpen(false)}
-                className={`block rounded-[9px] px-4 py-2.5 text-center text-[13.5px] font-semibold transition-all duration-300 ${isScrolled
-                  ? "border border-white/80 bg-[#0B3B7A] text-white hover:bg-white hover:text-[#0B3B7A]"
-                  : "bg-[#2563EB] text-white hover:bg-[#1d4ed8]"
-                  }`}
+            <div className="relative flex min-h-[100dvh] flex-col px-5 pb-7 pt-28 sm:px-8">
+              <ul className="ml-auto flex w-full flex-col items-end border-b border-white/20 pb-7 text-right">
+                {NAV_LINKS.map((link, index) => (
+                  <motion.li
+                    key={link.label}
+                    initial={reduceMotion ? false : { opacity: 0, y: 34 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: reduceMotion ? 0 : 0.55, delay: reduceMotion ? 0 : 0.18 + index * 0.055, ease: [0.16, 1, 0.3, 1] }}
+                    className="overflow-hidden"
+                  >
+                    <a
+                      href={link.href}
+                      aria-label={link.label}
+                      onClick={() => setIsMenuOpen(false)}
+                      className="group block py-1 font-display text-[clamp(2.65rem,13vw,4.5rem)] font-semibold leading-[0.94] tracking-[-0.065em] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-bright"
+                    >
+                      <VerticalSwapText className="h-[1em] w-fit" children={link.label} />
+                    </a>
+                  </motion.li>
+                ))}
+              </ul>
+
+              <motion.div
+                initial={reduceMotion ? false : { opacity: 0, y: 24 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: reduceMotion ? 0 : 0.55, delay: reduceMotion ? 0 : 0.5, ease: [0.16, 1, 0.3, 1] }}
+                className="mt-auto flex justify-end pt-8"
               >
-                Daftar Sekarang
-              </a>
+              <RegistrationCta
+                href={registrationHref}
+                target={GITREADY_EVENT.registrationUrl ? "_blank" : undefined}
+                rel={GITREADY_EVENT.registrationUrl ? "noopener noreferrer" : undefined}
+                onClick={() => setIsMenuOpen(false)}
+                onDark
+                className="w-fit"
+              />
+              </motion.div>
             </div>
           </motion.div>
         ) : null}

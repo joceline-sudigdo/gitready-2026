@@ -3,6 +3,7 @@
 /* eslint-disable react-hooks/immutability */
 
 import { useCallback, useEffect, useRef, useState } from "react";
+import { Volume2, VolumeX } from "lucide-react";
 
 import {
   AUDIO_PATHS,
@@ -47,11 +48,20 @@ type GameState = {
   canvasHeight: number;
 };
 
-function loadImage(src: string): Promise<HTMLImageElement> {
+function loadImage(src: string, attemptsLeft = 2): Promise<HTMLImageElement> {
   return new Promise((resolve, reject) => {
     const img = new Image();
     img.onload = () => resolve(img);
-    img.onerror = () => reject(new Error(`Gagal memuat gambar: ${src}`));
+    img.onerror = () => {
+      if (attemptsLeft > 1) {
+        window.setTimeout(() => {
+          loadImage(src, attemptsLeft - 1).then(resolve, reject);
+        }, 250);
+        return;
+      }
+
+      reject(new Error(`Gagal memuat gambar: ${src}`));
+    };
     img.src = src;
   });
 }
@@ -89,7 +99,12 @@ function createInitialState(): GameState {
   };
 }
 
-export function EndlessRunnerGame() {
+type EndlessRunnerGameProps = {
+  variant?: "default" | "head";
+};
+
+export function EndlessRunnerGame({ variant = "default" }: EndlessRunnerGameProps) {
+  const isHead = variant === "head";
   const containerRef = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const rafRef = useRef<number | null>(null);
@@ -272,6 +287,7 @@ export function EndlessRunnerGame() {
       }
     }
 
+    phaseRef.current = "gameover";
     setPhase("gameover");
   }
 
@@ -434,6 +450,7 @@ export function EndlessRunnerGame() {
   }
 
   const loop = useCallback((timestamp: number) => {
+    rafRef.current = null;
     const canvas = canvasRef.current;
     const s = stateRef.current;
     if (!canvas) return;
@@ -444,20 +461,36 @@ export function EndlessRunnerGame() {
     const dt = Math.min(40, timestamp - s.lastTimestamp); // clamp biar ga lompat kalau tab sempat freeze
     s.lastTimestamp = timestamp;
 
-    if (phaseRef.current === "running") {
-      update(dt);
-    }
-
+    if (phaseRef.current === "running") update(dt);
     draw(ctx);
-    rafRef.current = requestAnimationFrame(loop);
+    if (phaseRef.current === "running") rafRef.current = requestAnimationFrame(loop);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
+    if (rafRef.current) cancelAnimationFrame(rafRef.current);
+    stateRef.current.lastTimestamp = 0;
     rafRef.current = requestAnimationFrame(loop);
     return () => {
       if (rafRef.current) cancelAnimationFrame(rafRef.current);
+      rafRef.current = null;
     };
+  }, [loop, phase]);
+
+  useEffect(() => {
+    const handleVisibilityChange = () => {
+      if (document.hidden) {
+        if (rafRef.current) cancelAnimationFrame(rafRef.current);
+        rafRef.current = null;
+        stateRef.current.lastTimestamp = 0;
+        return;
+      }
+
+      if (!rafRef.current) rafRef.current = requestAnimationFrame(loop);
+    };
+
+    document.addEventListener("visibilitychange", handleVisibilityChange);
+    return () => document.removeEventListener("visibilitychange", handleVisibilityChange);
   }, [loop]);
 
   const resetGame = useCallback(() => {
@@ -478,6 +511,7 @@ export function EndlessRunnerGame() {
   const startGame = useCallback(() => {
     if (phaseRef.current === "running" || !assetsRef.current) return;
     resetGame();
+    phaseRef.current = "running";
     setPhase("running");
 
     if (audioRef.current && !isMutedRef.current) {
@@ -520,7 +554,7 @@ export function EndlessRunnerGame() {
   return (
     <div
       ref={containerRef}
-      className="relative mx-auto w-full select-none overflow-hidden rounded-[28px] border-[6px] border-[#0a1330] bg-[#050b1a] shadow-[0_25px_60px_-15px_rgba(10,19,48,0.55)]"
+      className={`relative mx-auto w-full select-none overflow-hidden border-[6px] shadow-[0_25px_60px_-15px_rgba(10,19,48,0.55)] ${isHead ? "rounded-[28px] border-[#0a1330] bg-[#050b1a]" : "rounded-[1.75rem] border-navy-deep bg-navy-deep"}`}
     >
       <canvas ref={canvasRef} className="block w-full touch-none" onPointerDown={jump} />
 
@@ -531,13 +565,13 @@ export function EndlessRunnerGame() {
           setIsMuted((prev) => !prev);
         }}
         aria-label={isMuted ? "Aktifkan suara" : "Matikan suara"}
-        className="absolute right-3 top-3 flex h-8 w-8 items-center justify-center rounded-full bg-black/40 text-sm text-blue-100/80 transition-colors hover:bg-black/60 hover:text-white"
+        className={isHead ? "absolute right-3 top-3 flex h-8 w-8 items-center justify-center rounded-full bg-black/40 text-sm text-blue-100/80 transition-colors hover:bg-black/60 hover:text-white" : "absolute right-3 top-3 flex size-9 items-center justify-center rounded-xl bg-navy-deep/70 text-blue-100/80 transition-colors hover:bg-navy hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-bright"}
       >
-        {isMuted ? "🔇" : "🔊"}
+        {isHead ? (isMuted ? "🔇" : "🔊") : isMuted ? <VolumeX className="size-4" aria-hidden="true" /> : <Volume2 className="size-4" aria-hidden="true" />}
       </button>
 
       {phase === "loading" && (
-        <div className="absolute inset-0 flex items-center justify-center bg-[#050b1a]/90 text-sm font-medium text-blue-100">
+        <div className={`absolute inset-0 flex items-center justify-center text-sm font-medium text-blue-100 ${isHead ? "bg-[#050b1a]/90" : "bg-navy-deep/90"}`}>
           Memuat aset game...
         </div>
       )}

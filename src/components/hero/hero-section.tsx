@@ -1,216 +1,210 @@
 "use client";
 
-import { motion } from "framer-motion";
-import { ArrowRight, ChevronDown, Sparkles } from "lucide-react";
+import { useRef, useState } from "react";
+import { LayoutGroup, motion, useReducedMotion, useScroll, useSpring, useTransform } from "framer-motion";
 
-import { GitVisualization } from "@/components/hero/git-visualization";
-import { HeroFeatures } from "@/components/hero/hero-features";
-import { SocialProof } from "@/components/hero/social-proof";
+import { HorizontalSwapArrow, RegistrationCta, VerticalSwapLabel } from "@/components/hero/registration-cta";
 
-const fadeUp = {
-  hidden: { opacity: 0, y: 20 },
-  visible: { opacity: 1, y: 0 },
-};
+function StackedHeroWord({
+  word,
+  layoutPrefix,
+  staggerOffset,
+  reverseStagger = false,
+  onSettled,
+  reduceMotion,
+}: {
+  word: string;
+  layoutPrefix: string;
+  staggerOffset: number;
+  reverseStagger?: boolean;
+  onSettled?: () => void;
+  reduceMotion: boolean | null;
+}) {
+  const highlightRef = useRef<HTMLSpanElement>(null);
+
+  const moveHighlight = (event: React.PointerEvent<HTMLSpanElement>) => {
+    const bounds = event.currentTarget.getBoundingClientRect();
+    highlightRef.current?.style.setProperty("--spot-x", `${event.clientX - bounds.left}px`);
+    highlightRef.current?.style.setProperty("--spot-y", `${event.clientY - bounds.top}px`);
+  };
+
+  const letters = Array.from(word);
+
+  return (
+    <span
+      onPointerEnter={moveHighlight}
+      onPointerMove={moveHighlight}
+      className="group/word pointer-events-auto relative flex cursor-default flex-row items-center gap-[clamp(0.7rem,3vw,1.15rem)] font-display text-[clamp(3.25rem,15vw,4.5rem)] leading-none md:flex-col md:gap-[clamp(0.5rem,1.3vw,1.25rem)] md:text-[clamp(3.25rem,7vw,7rem)]"
+    >
+      <span className="flex flex-row items-center gap-[inherit] text-blue-100/35 md:flex-col">
+        {letters.map((letter, index) => {
+          const staggerIndex = reverseStagger ? letters.length - 1 - index : index;
+
+          return (
+            <motion.span
+              key={`${letter}-base-${index}`}
+              layoutId={reduceMotion ? undefined : `${layoutPrefix}-${index}`}
+              transition={{
+                layout: {
+                  duration: reduceMotion ? 0 : 1.05,
+                  delay: reduceMotion ? 0 : staggerOffset + staggerIndex * 0.08,
+                  ease: [0.22, 1, 0.36, 1],
+                },
+              }}
+              onLayoutAnimationComplete={staggerIndex === letters.length - 1 ? onSettled : undefined}
+            >
+              {letter}
+            </motion.span>
+          );
+        })}
+      </span>
+      <span
+        ref={highlightRef}
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-0 flex flex-row items-center gap-[inherit] text-white opacity-0 transition-opacity duration-200 group-hover/word:opacity-100 md:flex-col"
+        style={{
+          WebkitMaskImage: "radial-gradient(ellipse 88px 20px at var(--spot-x, -100px) var(--spot-y, -100px), #000 0%, transparent 100%)",
+          maskImage: "radial-gradient(ellipse 88px 20px at var(--spot-x, -100px) var(--spot-y, -100px), #000 0%, transparent 100%)",
+        }}
+      >
+        {letters.map((letter, index) => (
+          <span key={`${letter}-highlight-${index}`}>{letter}</span>
+        ))}
+      </span>
+    </span>
+  );
+}
 
 export function HeroSection() {
+  const heroRef = useRef<HTMLElement>(null);
+  const reduceMotion = useReducedMotion();
+  const [introComplete, setIntroComplete] = useState(false);
+  const [splitSettled, setSplitSettled] = useState(false);
+  const { scrollYProgress } = useScroll({
+    target: heroRef,
+    offset: ["start start", "end start"],
+  });
+  const gitExitY = useTransform(scrollYProgress, [0, 0.3], ["0%", "-115%"]);
+  const readyExitY = useTransform(scrollYProgress, [0, 0.3], ["0%", "115%"]);
+  const heroCopyY = useTransform(scrollYProgress, [0, 0.8], ["0vh", "-6vh"]);
+  const registrationXTarget = useTransform(scrollYProgress, [0.08, 1], [0, -140]);
+  const detailsXTarget = useTransform(scrollYProgress, [0.08, 1], [0, 140]);
+  const registrationX = useSpring(registrationXTarget, { stiffness: 42, damping: 22, mass: 1.1 });
+  const detailsX = useSpring(detailsXTarget, { stiffness: 42, damping: 22, mass: 1.1 });
+
   return (
-    <section
-      id="top"
-      className="relative overflow-hidden bg-[#D7E0E8] pt-[70px]"
-    >
-      {/* Background */}
-      <div
-        className="pointer-events-none absolute inset-0"
-        aria-hidden="true"
-      >
-        {/* Subtle blue glow */}
-        <div className="absolute -right-40 top-0 h-[520px] w-[520px] rounded-full bg-[radial-gradient(circle,rgba(37,99,235,0.10)_0%,rgba(37,99,235,0)_70%)]" />
-
-        {/* Subtle purple glow */}
-        <div className="absolute -left-32 top-1/3 h-[420px] w-[420px] rounded-full bg-[radial-gradient(circle,rgba(124,92,252,0.07)_0%,rgba(124,92,252,0)_70%)]" />
-
-        {/* Dots */}
-        <svg
-          className="absolute right-8 top-24 hidden opacity-[0.35] lg:block"
-          width="140"
-          height="140"
-          aria-hidden="true"
-        >
-          <pattern
-            id="hero-dots"
-            width="14"
-            height="14"
-            patternUnits="userSpaceOnUse"
-          >
-            <circle
-              cx="1.5"
-              cy="1.5"
-              r="1.5"
-              fill="#AAB8C5"
-            />
-          </pattern>
-
-          <rect
-            width="140"
-            height="140"
-            fill="url(#hero-dots)"
-          />
-        </svg>
+    <section ref={heroRef} data-navbar-theme="dark" className="relative isolate min-h-[100dvh] bg-transparent text-white">
+      <div aria-hidden="true" className="pointer-events-none absolute inset-0">
+        <span className="absolute left-1/2 top-[-24rem] h-[37rem] w-[115vw] -translate-x-1/2 rounded-[50%] border border-blue-300/[0.07]" />
+        <span className="absolute left-1/2 top-[-20rem] h-[37rem] w-[102vw] -translate-x-1/2 rounded-[50%] border border-blue-300/[0.06]" />
+        <span className="absolute left-1/2 top-[-16rem] h-[37rem] w-[88vw] -translate-x-1/2 rounded-[50%] border border-blue-300/[0.05]" />
+        <span className="absolute bottom-[-18rem] left-1/2 h-[42rem] w-[min(100rem,120vw)] -translate-x-1/2 rounded-[50%] bg-[radial-gradient(ellipse_at_center,rgba(18,95,255,0.72)_0%,rgba(8,53,145,0.4)_34%,rgba(2,8,20,0)_74%)] blur-3xl" />
       </div>
 
-      <div className="relative mx-auto grid max-w-[1280px] gap-10 px-6 pb-14 pt-8 sm:px-8 lg:grid-cols-2 lg:items-center lg:gap-8 lg:px-10 lg:pb-12 lg:pt-10">
-        {/* Left content */}
-        <motion.div
-          initial="hidden"
-          animate="visible"
-          variants={{
-            visible: {
-              transition: {
-                staggerChildren: 0.12,
-              },
-            },
-          }}
-          className="relative z-10 flex flex-col items-start"
-        >
-          <motion.span
-            variants={fadeUp}
-            transition={{ duration: 0.5 }}
-            className="mb-5 inline-flex items-center gap-1.5 rounded-full bg-[#EEF5FF] px-3.5 py-1.5 text-[12.5px] font-medium text-[#0054A5]"
+      <LayoutGroup id="gitready-hero-intro">
+        {!introComplete ? (
+          <motion.div
+            aria-hidden="true"
+            className="pointer-events-none absolute inset-0 z-20 flex items-center justify-center overflow-hidden px-5"
           >
-            <Sparkles
-              className="h-3.5 w-3.5 text-[#2788CE]"
+            <div className="flex items-center gap-[0.16em] whitespace-nowrap font-display text-[clamp(2.65rem,12vw,4rem)] leading-none tracking-[-0.06em] text-white sm:text-[clamp(4.25rem,14vw,13rem)]">
+              <span className="flex">
+                {Array.from("GIT").map((letter, index) => (
+                  <span key={letter} className="overflow-hidden">
+                    <motion.span
+                      layoutId={reduceMotion ? undefined : `hero-intro-git-${index}`}
+                      initial={reduceMotion ? false : { opacity: 0, y: "110%" }}
+                      animate={{ opacity: 1, y: "0%" }}
+                      transition={{ duration: reduceMotion ? 0 : 0.62, delay: reduceMotion ? 0 : 0.12 + index * 0.09, ease: [0.22, 1, 0.36, 1] }}
+                      className="block"
+                    >
+                      {letter}
+                    </motion.span>
+                  </span>
+                ))}
+              </span>
+              <span className="flex">
+                {Array.from("READY").map((letter, index) => (
+                  <span key={`${letter}-${index}`} className="overflow-hidden">
+                    <motion.span
+                      layoutId={reduceMotion ? undefined : `hero-intro-ready-${index}`}
+                      initial={reduceMotion ? false : { opacity: 0, y: "110%" }}
+                      animate={{ opacity: 1, y: "0%" }}
+                      transition={{ duration: reduceMotion ? 0 : 0.62, delay: reduceMotion ? 0 : 0.12 + (index + 3) * 0.09, ease: [0.22, 1, 0.36, 1] }}
+                      onAnimationComplete={index === 4 ? () => setIntroComplete(true) : undefined}
+                      className="block"
+                    >
+                      {letter}
+                    </motion.span>
+                  </span>
+                ))}
+              </span>
+            </div>
+          </motion.div>
+        ) : (
+          <>
+            <div
               aria-hidden="true"
-            />
+              className={`pointer-events-none absolute inset-x-0 top-24 z-10 flex justify-center md:inset-x-auto md:left-6 md:top-1/2 md:block md:-translate-y-1/2 lg:left-10 ${splitSettled ? "overflow-hidden [mask-image:linear-gradient(to_bottom,transparent_0%,black_8%,black_92%,transparent_100%)]" : "overflow-visible"}`}
+            >
+              <motion.div style={reduceMotion ? undefined : { y: gitExitY }}>
+                <StackedHeroWord word="GIT" layoutPrefix="hero-intro-git" staggerOffset={0} reduceMotion={reduceMotion} />
+              </motion.div>
+            </div>
 
-            Presented by BNCC Learning &amp; Training
-          </motion.span>
+            <div
+              aria-hidden="true"
+              className={`pointer-events-none absolute inset-x-0 bottom-6 z-10 flex justify-center md:inset-x-auto md:bottom-auto md:right-6 md:top-1/2 md:block md:-translate-y-1/2 lg:right-10 ${splitSettled ? "overflow-hidden [mask-image:linear-gradient(to_bottom,transparent_0%,black_8%,black_92%,transparent_100%)]" : "overflow-visible"}`}
+            >
+              <motion.div style={reduceMotion ? undefined : { y: readyExitY }}>
+                <StackedHeroWord
+                  word="READY"
+                  layoutPrefix="hero-intro-ready"
+                  staggerOffset={0.12}
+                  reverseStagger
+                  onSettled={() => setSplitSettled(true)}
+                  reduceMotion={reduceMotion}
+                />
+              </motion.div>
+            </div>
+          </>
+        )}
 
-          <motion.h1
-            variants={fadeUp}
+        <div className="relative mx-auto flex min-h-[100dvh] w-full max-w-[1600px] flex-col items-center justify-center px-5 py-28 sm:px-8 lg:px-14">
+          <motion.div
+            initial={false}
+            animate={introComplete ? { opacity: 1, y: 0 } : { opacity: 0, y: 28 }}
             transition={{
-              duration: 0.6,
+              duration: reduceMotion ? 0 : 0.7,
+              delay: reduceMotion ? 0 : 1.15,
               ease: [0.22, 1, 0.36, 1],
             }}
-            className="text-[42px] font-extrabold leading-[1.02] tracking-tight text-[#111827] sm:text-[54px] lg:text-[64px]"
+            className={`relative z-10 flex w-full max-w-5xl flex-col items-center text-center ${introComplete ? "pointer-events-auto" : "pointer-events-none"}`}
           >
-            GitReady
-            <br />
-            with{" "}
-            <span className="bg-gradient-to-r from-[#2788CE] to-[#0054A5] bg-clip-text text-transparent">
-              LnT
-            </span>
-          </motion.h1>
-
-          <motion.p
-            variants={fadeUp}
-            transition={{
-              duration: 0.6,
-              delay: 0.05,
-            }}
-            className="mt-5 max-w-[420px] text-[16px] leading-[1.6] text-[#405575]"
-          >
-            Pelatihan Git &amp; GitHub untuk meningkatkan kolaborasi dalam
-            proyek pengembangan software secara profesional.
-          </motion.p>
-
-          <motion.div
-            variants={fadeUp}
-            transition={{
-              duration: 0.5,
-              delay: 0.15,
-            }}
-            className="mt-8 flex flex-wrap items-center gap-3"
-          >
-            <a
-              href="#daftar"
-              className="group inline-flex h-[46px] items-center gap-2 rounded-[9px] bg-gradient-to-r from-[#2788CE] to-[#0054A5] px-6 text-[14px] font-semibold text-white shadow-md shadow-blue-500/25 transition-all hover:-translate-y-0.5 hover:from-[#217DBE] hover:to-[#00478E] hover:shadow-lg"
-            >
-              Daftar Sekarang
-
-              <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
-            </a>
-
-            <a
-              href="#tentang"
-              className="inline-flex h-[46px] items-center rounded-[9px] border border-[#BFD2F5] bg-transparent px-6 text-[14px] font-semibold text-[#374151] transition-all hover:-translate-y-0.5 hover:bg-white"
-            >
-              Pelajari Lebih Lanjut
-            </a>
+            <motion.div style={reduceMotion ? undefined : { y: heroCopyY }} className="flex w-full flex-col items-center">
+              <h1 className="text-balance text-[clamp(3rem,6vw,5.8rem)] font-semibold leading-[0.92] tracking-[-0.06em] text-white">
+                <span className="block">Git lebih jelas.</span>
+                <span className="block">Kolaborasi lebih rapi.</span>
+              </h1>
+              <p className="mt-6 max-w-2xl text-pretty text-base leading-7 text-blue-100/65 sm:text-lg">
+                Pelajari Git dan GitHub lewat praktik, simulasi, dan alur kerja tim.
+              </p>
+            </motion.div>
+            <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
+              <motion.div style={reduceMotion ? undefined : { x: registrationX }}>
+                <RegistrationCta href="#daftar" />
+              </motion.div>
+              <motion.div style={reduceMotion ? undefined : { x: detailsX }}>
+                <a href="#detail-acara" aria-label="Lihat detail" className="group inline-flex min-h-12 items-center gap-2 border border-blue-400/55 bg-blue-950/25 px-6 font-semibold text-white transition-colors hover:border-blue-300 hover:bg-blue-900/35 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-300">
+                  <VerticalSwapLabel>Lihat detail</VerticalSwapLabel>
+                  <HorizontalSwapArrow />
+                </a>
+              </motion.div>
+            </div>
           </motion.div>
 
-          <motion.div
-            variants={fadeUp}
-            transition={{
-              duration: 0.5,
-              delay: 0.2,
-            }}
-            className="mt-10 w-full"
-          >
-            <HeroFeatures />
-          </motion.div>
-
-          <motion.div
-            variants={fadeUp}
-            transition={{
-              duration: 0.5,
-              delay: 0.25,
-            }}
-            className="mt-8 w-full"
-          >
-            <SocialProof />
-          </motion.div>
-        </motion.div>
-
-        {/* Right visual */}
-        <motion.div
-          initial={{
-            opacity: 0,
-            scale: 0.96,
-          }}
-          animate={{
-            opacity: 1,
-            scale: 1,
-          }}
-          transition={{
-            duration: 0.7,
-            delay: 0.2,
-            ease: [0.22, 1, 0.36, 1],
-          }}
-          className="relative z-0 lg:-mr-6 lg:scale-[1.05]"
-        >
-          <GitVisualization />
-        </motion.div>
-      </div>
-
-      {/* Scroll indicator */}
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{
-          duration: 0.6,
-          delay: 0.8,
-        }}
-        className="relative z-10 flex flex-col items-center gap-2 pb-10"
-      >
-        <p className="text-[12.5px] font-medium text-[#6B7280]">
-          Scroll untuk mengeksplorasi
-        </p>
-
-        <motion.span
-          animate={{ y: [0, 5, 0] }}
-          transition={{
-            duration: 1.8,
-            repeat: Infinity,
-            ease: "easeInOut",
-          }}
-          className="flex h-8 w-8 items-center justify-center rounded-full border border-[#C2CDD6] text-[#6B7280]"
-        >
-          <ChevronDown
-            className="h-4 w-4"
-            aria-hidden="true"
-          />
-        </motion.span>
-      </motion.div>
+        </div>
+      </LayoutGroup>
     </section>
   );
 }

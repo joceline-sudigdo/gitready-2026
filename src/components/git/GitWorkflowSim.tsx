@@ -52,7 +52,13 @@ function makeLog(command: string, status: "ok" | "error", detail: string): LogLi
 /* Component                                                            */
 /* ------------------------------------------------------------------ */
 
-export function GitWorkflowSimulator() {
+type GitWorkflowSimulatorProps = {
+  variant?: "default" | "hero" | "head";
+};
+
+export function GitWorkflowSimulator({ variant = "default" }: GitWorkflowSimulatorProps) {
+  const isHero = variant === "hero";
+  const isHead = variant === "head";
   const [workingFile, setWorkingFile] = useState<SimFile | null>(null);
   const [stagingFile, setStagingFile] = useState<SimFile | null>(null);
   const [localCommits, setLocalCommits] = useState<Commit[]>([]);
@@ -186,7 +192,7 @@ export function GitWorkflowSimulator() {
         return (
           <div className="flex w-full flex-col gap-1.5">
             {localCommits.map((c) => (
-              <CommitBadge key={c.id} commit={c} tone="violet" />
+              <CommitBadge key={c.id} commit={c} tone="violet" legacy={isHead} />
             ))}
           </div>
         );
@@ -194,7 +200,7 @@ export function GitWorkflowSimulator() {
         return (
           <div className="flex w-full flex-col gap-1.5">
             {githubCommits.map((c) => (
-              <CommitBadge key={c.id} commit={c} tone="emerald" />
+              <CommitBadge key={c.id} commit={c} tone="emerald" legacy={isHead} />
             ))}
           </div>
         );
@@ -210,8 +216,14 @@ export function GitWorkflowSimulator() {
 
   return (
     <div
-      className="mx-auto w-full overflow-x-hidden rounded-[20px] border-[6px] border-[#0a1330] p-4 shadow-[0_25px_60px_-15px_rgba(10,19,48,0.55)] sm:rounded-[24px] sm:p-6 lg:rounded-[28px] lg:p-7"
-      style={{ backgroundColor: COLORS.cardBg }}
+      className={`mx-auto w-full overflow-x-hidden p-4 sm:p-6 lg:p-7 ${
+        isHead
+          ? "rounded-[20px] border-[6px] border-[#0a1330] shadow-[0_25px_60px_-15px_rgba(10,19,48,0.55)] sm:rounded-[24px] lg:rounded-[28px]"
+          : isHero
+          ? "rounded-[1.25rem] border border-white/15 bg-[#030c1b] shadow-[0_-30px_100px_rgba(20,93,255,0.2)] sm:rounded-[1.5rem]"
+          : "rounded-[1.25rem] border-[6px] border-navy-deep shadow-[0_25px_60px_-15px_rgba(10,19,48,0.55)] sm:rounded-[1.5rem]"
+      }`}
+      style={isHero ? undefined : { backgroundColor: COLORS.cardBg }}
     >
       <style>{`
         @keyframes gws-fade-slide-in {
@@ -236,8 +248,7 @@ export function GitWorkflowSimulator() {
 
       {/* ---- Header ---- */}
       <div className="mb-4 flex flex-wrap items-center justify-between gap-2 sm:mb-5">
-        <div className="min-w-0">
-        </div>
+        <div className="min-w-0" />
         <button
           type="button"
           onClick={handleReset}
@@ -249,7 +260,7 @@ export function GitWorkflowSimulator() {
       </div>
 
       {/* ---- 4 kotak stage ---- */}
-      <div className="grid grid-cols-1 gap-3 min-[420px]:grid-cols-2 md:grid-cols-4">
+      <div className={`grid grid-cols-1 gap-3 ${isHead ? "min-[420px]:grid-cols-2 md:grid-cols-4" : "sm:grid-cols-2 lg:grid-cols-4"}`}>
         {STAGES.map((stage) => {
           const Icon = stage.icon;
           return (
@@ -289,7 +300,7 @@ export function GitWorkflowSimulator() {
       </div>
 
       {/* ---- Tombol aksi ---- */}
-      <div className="mt-4 grid grid-cols-2 gap-2 sm:mt-5 sm:gap-3 md:grid-cols-4">
+      <div className={`mt-4 grid grid-cols-2 gap-2 sm:mt-5 sm:gap-3 ${isHead ? "md:grid-cols-4" : "lg:grid-cols-4"}`}>
         {ACTIONS.map((action) => {
           const Icon = action.icon;
           return (
@@ -314,16 +325,24 @@ export function GitWorkflowSimulator() {
 
       {/* ---- Terminal ---- */}
       <div className="mt-4 overflow-hidden rounded-xl sm:mt-5" style={{ backgroundColor: COLORS.terminalBg }}>
+        {isHead ? (
+          <div className="flex items-center gap-1.5 border-b border-white/5 px-3 py-2" style={{ backgroundColor: COLORS.terminalBarBg }}>
+            <span className="h-2.5 w-2.5 rounded-full bg-[#ff5f56]" />
+            <span className="h-2.5 w-2.5 rounded-full bg-[#ffbd2e]" />
+            <span className="h-2.5 w-2.5 rounded-full bg-[#27c93f]" />
+            <span className="ml-2 text-[10px] text-white/30">terminal</span>
+          </div>
+        ) : (
+          <div className="flex items-center justify-between border-b border-white/5 px-3 py-2" style={{ backgroundColor: COLORS.terminalBarBg }}>
+            <span className="font-mono text-[10px] tracking-wide text-white/45">gitready / workspace</span>
+            <span className="font-mono text-[10px] text-blue-200/50">main</span>
+          </div>
+        )}
         <div
-          className="flex items-center gap-1.5 border-b border-white/5 px-3 py-2"
-          style={{ backgroundColor: COLORS.terminalBarBg }}
+          ref={terminalRef}
+          data-lenis-prevent
+          className="max-h-32 overflow-y-auto overflow-x-hidden px-3 py-2.5 font-mono text-[11px] leading-relaxed sm:max-h-40 sm:text-[12px]"
         >
-          <span className="h-2.5 w-2.5 rounded-full bg-[#ff5f56]" />
-          <span className="h-2.5 w-2.5 rounded-full bg-[#ffbd2e]" />
-          <span className="h-2.5 w-2.5 rounded-full bg-[#27c93f]" />
-          <span className="ml-2 text-[10px] text-white/30">terminal</span>
-        </div>
-        <div ref={terminalRef} className="max-h-32 overflow-y-auto overflow-x-hidden px-3 py-2.5 font-mono text-[11px] leading-relaxed sm:max-h-40 sm:text-[12px]">
           {logs.map((log) => (
             <div key={log.id} className="gws-item-enter">
               {log.command ? (
@@ -333,7 +352,15 @@ export function GitWorkflowSimulator() {
                 </p>
               ) : null}
               <p style={{ color: log.status === "error" ? COLORS.terminalError : COLORS.terminalText }}>
-                {log.command ? (log.status === "error" ? "✗ " : "✔ ") : "$ "}
+                {log.command
+                  ? isHead
+                    ? log.status === "error"
+                      ? "✗ "
+                      : "✔ "
+                    : log.status === "error"
+                      ? "[error] "
+                      : "[ok] "
+                  : "$ "}
                 {log.command ? log.detail : `[${log.detail}]`}
               </p>
             </div>
@@ -357,10 +384,10 @@ function FileBadge({ label, sub, tone }: { label: string; sub: string; tone: Ton
   );
 }
 
-function CommitBadge({ commit, tone }: { commit: Commit; tone: Tone }) {
+function CommitBadge({ commit, tone, legacy = false }: { commit: Commit; tone: Tone; legacy?: boolean }) {
   return (
     <div className={`gws-item-enter w-full rounded-lg border px-2 py-1.5 ${TONE_STYLES[tone]}`}>
-      <p className="truncate text-[11px] font-semibold">● {commit.hash}</p>
+      <p className={`truncate text-[11px] font-semibold ${legacy ? "" : "font-mono"}`}>{legacy ? `● ${commit.hash}` : commit.hash}</p>
       <p className="truncate text-[9px] opacity-80">{commit.message}</p>
     </div>
   );

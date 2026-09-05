@@ -1,26 +1,23 @@
 import type { Metadata } from "next";
-import { Poppins } from "next/font/google";
+import { Outfit, Syne } from "next/font/google";
+import { SmoothScroll } from "@/components/smooth-scroll";
 import "./globals.css";
 
-const poppins = Poppins({
+const outfit = Outfit({
   subsets: ["latin"],
-  weight: [
-    "100",
-    "200",
-    "300",
-    "400",
-    "500",
-    "600",
-    "700",
-    "800",
-    "900",
-  ],
-  variable: "--font-poppins",
+  variable: "--font-outfit",
+  display: "swap",
+});
+
+const syne = Syne({
+  subsets: ["latin"],
+  weight: "700",
+  variable: "--font-syne",
   display: "swap",
 });
 
 export const metadata: Metadata = {
-  title: "GitReady — Workshop Git & GitHub",
+  title: "GitReady 2026 | Workshop Git & GitHub",
   description:
     "Belajar Git & GitHub dari nol: workflow simulator interaktif, mini game, dan sesi bareng instruktur.",
 };
@@ -31,11 +28,10 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="id" className="scroll-smooth">
-      <body className={poppins.className}>
-        {children}
+    <html lang="id">
+      <body className={`${outfit.variable} ${syne.variable} font-sans`}>
+        <SmoothScroll>{children}</SmoothScroll>
       </body>
     </html>
   );
 }
-

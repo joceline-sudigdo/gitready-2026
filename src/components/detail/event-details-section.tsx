@@ -1,87 +1,120 @@
 "use client";
 
-import { motion } from "framer-motion";
-import { ArrowRight } from "lucide-react";
+import { motion, useReducedMotion } from "framer-motion";
+import { ArrowRight, ArrowUpRight } from "lucide-react";
 
-import { EVENT_INFO, REGISTRATION_FORM_URL } from "@/constants/event-config";
+import { EVENT_INFO, GITREADY_EVENT } from "@/constants/event-config";
+
+const DETAIL_ITEMS = [
+  { label: "Tahun", value: String(GITREADY_EVENT.year) },
+  ...EVENT_INFO.map(({ label, value }) => ({ label, value })),
+];
+
+const EASE = [0.16, 1, 0.3, 1] as const;
+
+function RegistrationArrow() {
+  return (
+    <span
+      aria-hidden="true"
+      className="relative block size-11 overflow-hidden text-ink transition-colors duration-500 group-hover:text-white"
+    >
+      <ArrowRight className="absolute inset-0 m-auto size-7 transition-transform duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:translate-x-[140%] group-hover:-translate-y-[140%] motion-reduce:transition-none" />
+      <ArrowUpRight className="absolute inset-0 m-auto size-7 -translate-x-[140%] translate-y-[140%] transition-transform duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:translate-x-0 group-hover:translate-y-0 motion-reduce:transition-none" />
+    </span>
+  );
+}
 
 export function EventDetailsSection() {
-  return (
-    <section id="detail-acara" className="bg-[#D7E0E8] px-6 py-16 sm:px-8 lg:px-10">
-      <div className="mx-auto max-w-[760px] text-center">
-        <motion.h2
-          initial={{ opacity: 0, y: 16 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0.3 }}
-          transition={{
-            duration: 0.5,
-            ease: [0.22, 1, 0.36, 1],
-          }}
-          className="mb-4 bg-gradient-to-r from-[#2788CE] to-[#0054A5] bg-clip-text text-3xl font-extrabold uppercase tracking-wide text-transparent sm:text-4xl"
-        >
-          Detail Acara
-        </motion.h2>
-        <motion.p
-          initial={{ opacity: 0, y: 16 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0.3 }}
-          transition={{ duration: 0.5, delay: 0.05, ease: [0.22, 1, 0.36, 1] }}
-          className="mx-auto mt-2 max-w-[440px] text-[15px] text-[#6B7280]"
-        >
-          Catat jadwalnya dan jangan sampai terlewat.
-        </motion.p>
+  const reduceMotion = useReducedMotion();
 
-        {/* Grid 3 card terpisah */}
-        <div className="mt-8 grid grid-cols-1 gap-6 sm:grid-cols-3">
-          {EVENT_INFO.map(({ icon: Icon, label, value }, index) => (
-            <motion.div
-              key={label}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, amount: 0.3 }}
-              transition={{
-                duration: 0.6,
-                delay: 0.1 + index * 0.08,
-                ease: [0.22, 1, 0.36, 1],
-              }}
-              className="flex flex-col items-start gap-3 rounded-2xl border border-[#D7E0E8] bg-[#F7FAFF] p-6 text-left shadow-[0_8px_24px_-12px_rgba(37,99,235,0.15)]"
-            >
-              <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-[10px] bg-white text-[#2563EB] shadow-sm">
-                <Icon className="h-[18px] w-[18px]" aria-hidden="true" />
+  return (
+    <section
+      id="detail-acara"
+      aria-labelledby="event-details-title"
+      data-navbar-theme="light"
+      className="bg-white py-8 sm:py-10 lg:py-12"
+    >
+      <div className="grid w-full gap-14 pl-2 pr-5 sm:pl-4 sm:pr-8 lg:grid-cols-[minmax(15rem,0.42fr)_minmax(0,1.58fr)] lg:gap-8 lg:pl-3 lg:pr-12 xl:pr-16">
+        <div className="self-start lg:flex lg:self-stretch lg:items-stretch lg:justify-start">
+          <h2
+            id="event-details-title"
+            aria-label="Detail event"
+            className="w-fit font-display leading-none text-navy lg:flex lg:h-full lg:items-end"
+          >
+            <span aria-hidden="true" className="text-[clamp(4rem,13vw,7rem)] tracking-[-0.08em] lg:hidden">
+              DETAIL EVENT
+            </span>
+            <span aria-hidden="true" className="hidden items-end gap-2 lg:flex">
+              <span className="-translate-y-3 rotate-180 text-[clamp(9rem,min(21vw,28vh),18rem)] tracking-[-0.08em] [writing-mode:vertical-rl]">
+                DETAIL
               </span>
-              <div>
-                <p className="text-[11.5px] font-semibold uppercase tracking-wide text-[#6B7280]">
-                  {label}
-                </p>
-                <p className="mt-0.5 text-[14.5px] font-semibold leading-snug text-[#111827]">
-                  {value}
-                </p>
-              </div>
-            </motion.div>
-          ))}
+              <span className="-translate-y-5 rotate-180 text-[clamp(3.5rem,min(7vw,10vh),7rem)] tracking-[-0.04em] text-brand [writing-mode:vertical-rl]">
+                EVENT
+              </span>
+            </span>
+          </h2>
         </div>
 
-        {/* Tombol di luar card */}
-        <motion.div
-          initial={{ opacity: 0, y: 16 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0.3 }}
-          transition={{ duration: 0.5, delay: 0.4, ease: [0.22, 1, 0.36, 1] }}
-          className="mt-8 flex justify-center"
-        >
-          <a
-            href={REGISTRATION_FORM_URL}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="group inline-flex h-[46px] w-full items-center justify-center gap-2 rounded-[9px] border border-transparent bg-gradient-to-r from-[#2788CE] to-[#0054A5] px-6 text-[14px] font-semibold text-white shadow-sm shadow-blue-500/20 transition-all hover:-translate-y-0.5 hover:from-[#217DBE] hover:to-[#00478E] hover:shadow-md sm:w-auto"
+        <dl className="border-t border-navy">
+          {DETAIL_ITEMS.map(({ label, value }, index) => (
+            <motion.div
+              key={label}
+              initial={reduceMotion ? false : { opacity: 0, x: 28 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true, amount: 0.5 }}
+              transition={{ duration: reduceMotion ? 0 : 0.62, delay: reduceMotion ? 0 : index * 0.07, ease: EASE }}
+              className="group relative grid min-h-36 overflow-hidden border-b border-line px-1 py-8 sm:min-h-40 sm:grid-cols-[10rem_1fr] sm:items-center sm:px-5 lg:min-h-44 lg:grid-cols-[13rem_1fr] lg:px-6"
+            >
+              <span
+                aria-hidden="true"
+                className="absolute inset-0 -translate-x-[101%] bg-navy transition-transform duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:translate-x-0 motion-reduce:transition-none"
+              />
+              <dt className="relative z-10 font-display text-[clamp(1.15rem,1.7vw,1.75rem)] font-semibold leading-none tracking-[-0.035em] text-brand transition-[color,transform] duration-500 group-hover:translate-x-2 group-hover:text-blue-100 motion-reduce:transform-none motion-reduce:transition-none">
+                {label}
+              </dt>
+              <dd className="relative z-10 mt-3 text-[clamp(1.75rem,4vw,3.5rem)] font-medium leading-none tracking-[-0.045em] text-ink transition-colors duration-500 group-hover:text-white motion-reduce:transition-none sm:mt-0">
+                {value}
+              </dd>
+            </motion.div>
+          ))}
+
+          <motion.div
+            initial={reduceMotion ? false : { opacity: 0, x: 28 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true, amount: 0.5 }}
+            transition={{ duration: reduceMotion ? 0 : 0.62, delay: reduceMotion ? 0 : DETAIL_ITEMS.length * 0.07, ease: EASE }}
+            className="group relative grid min-h-36 overflow-hidden border-b border-navy px-1 py-8 sm:min-h-40 sm:grid-cols-[10rem_1fr] sm:items-center sm:px-5 lg:min-h-44 lg:grid-cols-[13rem_1fr] lg:px-6"
           >
-            Daftar Sekarang
-            <ArrowRight
-              className="h-4 w-4 transition-transform group-hover:translate-x-0.5"
+            <span
               aria-hidden="true"
+              className="absolute inset-0 -translate-x-[101%] bg-navy transition-transform duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:translate-x-0 motion-reduce:transition-none"
             />
-          </a>
-        </motion.div>
+            <dt className="relative z-10 font-display text-[clamp(1.15rem,1.7vw,1.75rem)] font-semibold leading-none tracking-[-0.035em] text-brand transition-[color,transform] duration-500 group-hover:translate-x-2 group-hover:text-blue-100 motion-reduce:transform-none motion-reduce:transition-none">
+              Pendaftaran
+            </dt>
+            <dd className="relative z-10 mt-3 flex justify-end sm:mt-0">
+              {GITREADY_EVENT.registrationUrl ? (
+                <a
+                  href={GITREADY_EVENT.registrationUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="Buka formulir pendaftaran"
+                  className="inline-flex size-11 items-center justify-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand focus-visible:ring-offset-4 focus-visible:ring-offset-white"
+                >
+                  <RegistrationArrow />
+                </a>
+              ) : (
+                <span
+                  aria-disabled="true"
+                  aria-label="Pendaftaran belum dibuka"
+                  className="inline-flex size-11 items-center justify-center"
+                >
+                  <RegistrationArrow />
+                </span>
+              )}
+            </dd>
+          </motion.div>
+        </dl>
       </div>
     </section>
   );
