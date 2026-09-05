@@ -10,7 +10,6 @@ import {
 } from "lucide-react";
 import Image from "next/image";
 import { learningPoints } from "@/constants/learning-points";
-import { RandomMascots } from "@/components/shared/random-mascots";
 
 // Konten sumber: Isi Konten Website GitReady with LnT — Bagian 4. Materi Workshop
 const ICONS = [GitBranch, GitMerge, FlaskConical, Layers, Users];
@@ -18,9 +17,6 @@ const ICONS = [GitBranch, GitMerge, FlaskConical, Layers, Users];
 export function LearningOutcomeSection() {
   return (
     <section id="materi" className="relative overflow-hidden py-16 sm:py-20">
-      {/* Random ambient mascots — positions change on every refresh */}
-      <RandomMascots count={4} />
-
       <div className="gr-container relative z-10">
 
         {/* Heading — black title with navy bar */}
@@ -64,17 +60,36 @@ export function LearningOutcomeSection() {
             })}
           </div>
 
-          {/* RIGHT — dark blue card with laptop photo */}
+          {/* RIGHT — dark blue card with laptop photo + Robot Cookie */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, amount: 0.3 }}
             transition={{ duration: 0.6, ease: "easeOut" }}
-            className="flex flex-col items-center justify-center gap-4 rounded-2xl px-6 py-8 text-center text-white lg:col-span-2"
+            className="relative flex flex-col gap-4 overflow-hidden rounded-2xl px-6 py-8 text-white lg:col-span-2"
             style={{ backgroundColor: "#003F7A" }}
           >
-            {/* Laptop image filling the screen area */}
-            <div className="w-full overflow-hidden rounded-xl" style={{ backgroundColor: "#003F7A" }}>
+            {/* Dot-grid texture */}
+            <div
+              className="pointer-events-none absolute inset-0 opacity-[0.06]"
+              style={{
+                backgroundImage:
+                  "radial-gradient(circle, #4DC8F5 1px, transparent 1px)",
+                backgroundSize: "20px 20px",
+              }}
+            />
+
+            {/* Cyan top glow */}
+            <div
+              className="pointer-events-none absolute -top-10 left-1/2 h-40 w-40 -translate-x-1/2 rounded-full"
+              style={{
+                background:
+                  "radial-gradient(circle, rgba(77,200,245,0.15) 0%, transparent 70%)",
+              }}
+            />
+
+            {/* Laptop image */}
+            <div className="relative z-10 w-full overflow-hidden rounded-xl" style={{ backgroundColor: "#003F7A" }}>
               <Image
                 src="/laptop-mockup.png"
                 alt="Laptop GitReady with LnT"
@@ -86,10 +101,42 @@ export function LearningOutcomeSection() {
               />
             </div>
 
-            <div className="space-y-1">
-              <h3 className="text-xl font-bold text-white">Siap Menjadi Developer?</h3>
-              <p className="text-sm text-white/60">Mulai langkahmu hari ini bersama GitReady 2.0.</p>
+            {/*
+              Bottom row: text on the left, Robot Cookie on the right.
+              Side-by-side so the robot never sits on top of the text.
+            */}
+            <div className="relative z-10 flex items-end justify-between gap-3">
+              <div className="space-y-1">
+                <h3 className="text-xl font-bold text-white">Siap Menjadi Developer?</h3>
+                <p className="text-sm text-white/60">
+                  Mulai langkahmu hari ini bersama GitReady 2.0.
+                </p>
+              </div>
+
+              <motion.div
+                animate={{ y: [0, -8, 0] }}
+                transition={{ duration: 3.2, repeat: Infinity, ease: "easeInOut" }}
+                className="pointer-events-none shrink-0"
+                style={{ filter: "drop-shadow(0 6px 16px rgba(77,200,245,0.4))" }}
+              >
+                <Image
+                  src="/images/Robot Cookie.png"
+                  alt=""
+                  width={80}
+                  height={88}
+                  aria-hidden
+                />
+              </motion.div>
             </div>
+
+            {/* Bottom accent bar */}
+            <div
+              className="absolute bottom-0 left-0 right-0 h-[3px]"
+              style={{
+                background:
+                  "linear-gradient(90deg, transparent, #4DC8F5, transparent)",
+              }}
+            />
           </motion.div>
 
         </div>

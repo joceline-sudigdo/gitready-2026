@@ -16,11 +16,12 @@ export default function Home() {
       <main className="flex min-h-screen flex-col bg-[#DCE3ED]">
         <HeroSection />
         <EventDetailsSection />
-        <GuidebookSection />
 
         <AboutSection />
         <InstructorSection />
         <LearningOutcomeSection />
+
+        <GuidebookSection />
 
         <section className="px-6 pb-24 pt-16 sm:px-12 lg:px-16">
           <div className="mx-auto max-w-7xl">

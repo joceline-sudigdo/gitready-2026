@@ -1,9 +1,22 @@
 import type { Instructor } from "@/types/content.types";
 
 // Sumber: Isi Konten Website GitReady with LnT — Bagian 3. Instruktur
-// Konten asli berstatus "COMING SOON", jadi data instruktur belum diisi.
-// Tinggal tambahkan object Instructor ke array ini begitu data resmi tersedia,
-// section akan otomatis berpindah dari state "Coming Soon" ke grid instruktur.
-export const leadInstructor: Instructor | null = null;
+// Ada 2 instruktur. Setiap slot bisa diisi Instructor atau null (= placeholder "Coming Soon").
+// Urutan array menentukan urutan tampil di halaman.
+export const instructors: (Instructor | null)[] = [
+  {
+    id: "hisam",
+    name: "Hisam",
+    role: "Chief Information Officer",
+    photoUrl: "/images/instructors/hisam.png",
+    photoScale: 1,
 
-export const assistantInstructors: Instructor[] = [];
+  },
+  {
+    id: "lexy-samuel",
+    name: "Lexy Samuel",
+    role: "Developer Relations BlockDev",
+    photoUrl: "/images/instructors/lexy-samuel.png",
+    photoScale: 1.2,
+  },
+];
