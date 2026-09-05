@@ -13,8 +13,11 @@ export function EventDetailsSection() {
           initial={{ opacity: 0, y: 16 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.3 }}
-          transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
-          className="text-[28px] font-extrabold text-[#111827] sm:text-[34px]"
+          transition={{
+            duration: 0.5,
+            ease: [0.22, 1, 0.36, 1],
+          }}
+          className="mb-4 bg-gradient-to-r from-[#2788CE] to-[#0054A5] bg-clip-text text-3xl font-extrabold uppercase tracking-wide text-transparent sm:text-4xl"
         >
           Detail Acara
         </motion.h2>
@@ -70,10 +73,13 @@ export function EventDetailsSection() {
             href={REGISTRATION_FORM_URL}
             target="_blank"
             rel="noopener noreferrer"
-            className="group inline-flex h-[46px] w-full items-center justify-center gap-2 rounded-[9px] bg-[#2563EB] px-6 text-[14px] font-semibold text-white shadow-md shadow-blue-500/25 transition-all hover:-translate-y-0.5 hover:bg-[#1D4ED8] hover:shadow-lg sm:w-auto"
+            className="group inline-flex h-[46px] w-full items-center justify-center gap-2 rounded-[9px] border border-transparent bg-gradient-to-r from-[#2788CE] to-[#0054A5] px-6 text-[14px] font-semibold text-white shadow-sm shadow-blue-500/20 transition-all hover:-translate-y-0.5 hover:from-[#217DBE] hover:to-[#00478E] hover:shadow-md sm:w-auto"
           >
             Daftar Sekarang
-            <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" aria-hidden="true" />
+            <ArrowRight
+              className="h-4 w-4 transition-transform group-hover:translate-x-0.5"
+              aria-hidden="true"
+            />
           </a>
         </motion.div>
       </div>
