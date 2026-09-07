@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 
 import { EventDetailsSection } from "@/components/detail/event-details-section";
-import { VivaRunSection } from "@/components/experience-sections";
+import { SimulatorSection } from "@/components/experience-sections";
 import { FaqSection } from "@/components/faq/faq-section";
 import { Footer } from "@/components/footer";
 import { GuidebookSection } from "@/components/guidebook/guidebook-section";
@@ -29,7 +29,7 @@ export default function CobaPage() {
           <MentorSection />
         </div>
         <EventDetailsSection />
-        <VivaRunSection />
+        <SimulatorSection />
         <GuidebookSection />
         {/* <RegistrationStatusSection /> */}
         <FaqSection />

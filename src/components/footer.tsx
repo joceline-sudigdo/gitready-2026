@@ -39,9 +39,16 @@ export function Footer() {
           <a
             href="#top"
             aria-label="Kembali ke awal halaman"
-            className="block whitespace-nowrap text-center font-display text-[clamp(4.5rem,min(18vw,30vh),22rem)] font-semibold leading-[0.72] tracking-[-0.085em] text-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand"
+            className="flex justify-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand"
           >
-            GITREADY
+            <Image
+              src="/images/logo-git.png"
+              alt="GitReady"
+              width={1000}
+              height={200}
+              priority={false}
+              className="h-[clamp(4.5rem,min(18vw,30vh),22rem)] w-auto object-contain"
+            />
           </a>
         </div>
 

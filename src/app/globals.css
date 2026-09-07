@@ -62,14 +62,14 @@
 :root {
   --canvas: #dce3ed;
   --canvas-deep: #cbd7e5;
-  --navy: #0b3b7a;
-  --navy-deep: #072955;
+  --navy: #105EA9;
+  --navy-deep: #072041;
   --ink: #10233f;
   --ink-muted: #405575;
   --line: #b9cadc;
-  --brand: #126caf;
-  --brand-bright: #55c8f3;
-  --brand-soft: #c8e8f6;
+  --brand: #0755B1;
+  --brand-bright: #3465A9;
+  --brand-soft: #E6F3FF;
   --background: var(--canvas);
   --foreground: var(--ink);
   --surface: #f5f8fc;

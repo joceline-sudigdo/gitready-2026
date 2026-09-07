@@ -130,9 +130,9 @@ export default function SpeakerSection() {
             </div>
 
             <h3 className="mt-0 font-figtree text-[clamp(38px,3.6vw,70px)] font-black uppercase leading-[0.82] tracking-[-0.075em] text-[#55c8f3] lg:mt-7">
-              Bintang
+              Lexy
               <br />
-              Qurne
+              Samuel
             </h3>
 
             <div className="mt-5 pt-3">
@@ -181,7 +181,7 @@ export default function SpeakerSection() {
           <div className="about-portrait relative min-h-[520px] overflow-hidden bg-[#061225] lg:h-[65svh] lg:min-h-[520px] lg:max-h-[740px]">
             <motion.div className="absolute inset-0" style={{ scale: reduceMotion ? 1 : portraitScale }}>
               <Image
-                src="/images/aku.png"
+                src="/images/Lexy.png"
                 alt="Bintang Qurne, pemateri GitReady 2026"
                 fill
                 sizes="(max-width: 1023px) 100vw, 36vw"

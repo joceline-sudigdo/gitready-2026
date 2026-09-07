@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import type { ElementType } from "react";
 import { motion } from "framer-motion";
 import { Globe, Phone } from "lucide-react";
@@ -61,7 +62,9 @@ export function LegacyFooter() {
   return (
     <motion.footer initial={{ y: 80, opacity: 0 }} whileInView={{ y: 0, opacity: 1 }} viewport={{ once: false, amount: 0.2 }} transition={{ duration: 2, ease: [0.22, 1, 0.36, 1] }} className="mt-auto rounded-t-[2.5rem] bg-[#0B3B7A] px-6 py-14 sm:px-12 lg:px-16">
       <div className="mx-auto max-w-6xl">
-        <h2 className="text-center text-3xl font-extrabold text-white sm:text-4xl">GitReady</h2>
+        <div className="flex justify-center">
+          <Image src="/images/logo-git.png" alt="GitReady" width={160} height={48} className="h-8 w-auto sm:h-10" priority={false} />
+        </div>
         <div className="mt-10 grid gap-10 sm:grid-cols-2 lg:grid-cols-3">
           <div className="space-y-2">
             <p className="text-sm font-semibold uppercase tracking-wide text-blue-200/70">Contact Person:</p>

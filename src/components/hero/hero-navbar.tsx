@@ -5,8 +5,6 @@ import Image from "next/image";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { Menu, X } from "lucide-react";
 
-import { RegistrationCta } from "@/components/hero/registration-cta";
-import { GITREADY_EVENT } from "@/constants/event-config";
 import { NAV_LINKS } from "@/constants/hero-config";
 
 function VerticalSwapText({ children, className = "" }: { children: string; className?: string }) {
@@ -22,11 +20,18 @@ function VerticalSwapText({ children, className = "" }: { children: string; clas
   );
 }
 
-function BNCCLogo({ isOnDarkSection }: { isOnDarkSection: boolean }) {
+function BNCCLogo() {
   return (
-    <a href="#top" className="relative flex h-8 w-[130px] items-center rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-bright" aria-label="Kembali ke awal halaman">
-      <Image src="/images/BNCC_Black.png" alt="BNCC" width={642} height={185} priority className={`h-7 w-auto object-contain transition-opacity duration-300 sm:h-8 ${isOnDarkSection ? "opacity-0" : "opacity-100"}`} style={{ width: "auto" }} />
-      <Image src="/images/BNCC_White.png" alt="" width={718} height={209} priority className={`absolute left-0 h-7 w-auto object-contain transition-opacity duration-300 sm:h-8 ${isOnDarkSection ? "opacity-100" : "opacity-0"}`} style={{ width: "auto" }} />
+    <a href="#top" className="relative flex h-10 w-[160px] items-center rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-bright sm:h-15 sm:w-[210px]" aria-label="Kembali ke awal halaman">
+      <Image
+        src="/images/logo.png"
+        alt="BNCC"
+        width={642}
+        height={185}
+        priority
+        className="h-13 w-auto object-contain sm:h-30"
+        style={{ width: "auto" }}
+      />
     </a>
   );
 }
@@ -35,7 +40,6 @@ export function HeroNavbar() {
   const [isOnDarkSection, setIsOnDarkSection] = useState(true);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const reduceMotion = useReducedMotion();
-  const registrationHref = GITREADY_EVENT.registrationUrl ?? "#daftar";
   const navbarOnDark = isMenuOpen || isOnDarkSection;
 
   useEffect(() => {
@@ -87,9 +91,14 @@ export function HeroNavbar() {
 
   return (
     <header className={`fixed inset-x-0 top-0 z-50 transition-colors duration-300 ${navbarOnDark ? "text-white" : "text-navy"}`}>
-      <nav aria-label="Navigasi utama" className="relative z-30 flex h-20 w-full items-center justify-between px-5 sm:px-8 lg:px-14">
-        <BNCCLogo isOnDarkSection={navbarOnDark} />
-        <ul className={`absolute left-1/2 hidden -translate-x-1/2 items-center gap-6 rounded-2xl border px-6 py-3 backdrop-blur-md transition-colors lg:flex ${isOnDarkSection ? "border-white/10 bg-[#061225]/45" : "border-navy/10 bg-canvas/55"}`}>
+      <nav
+        aria-label="Navigasi utama"
+        className={`relative z-30 flex h-20 w-full items-center justify-between border-b px-5 backdrop-blur-md transition-colors duration-300 sm:px-8 lg:px-14 ${
+          navbarOnDark ? "border-[#3465A9]/15 bg-[#0755B1]/10" : "border-[#3465A9]/10 bg-[#E6F3FF]/70"
+        }`}
+      >
+        <BNCCLogo />
+        <ul className={`absolute left-1/2 hidden -translate-x-1/2 items-center gap-6 rounded-2xl border px-6 py-3 backdrop-blur-md transition-colors lg:flex ${isOnDarkSection ? "border-[#3465A9]/25 bg-[#0755B1]/20" : "border-[#3465A9]/15 bg-[#E6F3FF]/60"}`}>
           {NAV_LINKS.map((link) => (
             <li key={link.label}>
               <a href={link.href} aria-label={link.label} className="group block rounded-sm text-base font-medium leading-tight focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-bright">
@@ -98,14 +107,6 @@ export function HeroNavbar() {
             </li>
           ))}
         </ul>
-        <div className="hidden lg:block">
-          <RegistrationCta
-            href={registrationHref}
-            target={GITREADY_EVENT.registrationUrl ? "_blank" : undefined}
-            rel={GITREADY_EVENT.registrationUrl ? "noopener noreferrer" : undefined}
-            onDark={navbarOnDark}
-          />
-        </div>
         <button
           type="button"
           onClick={() => setIsMenuOpen((open) => !open)}
@@ -126,7 +127,7 @@ export function HeroNavbar() {
             animate={{ clipPath: "inset(0 0 0% 0)" }}
             exit={{ clipPath: "inset(0 0 100% 0)" }}
             transition={{ duration: reduceMotion ? 0 : 0.65, ease: [0.16, 1, 0.3, 1] }}
-            className="fixed inset-0 z-10 min-h-[100dvh] overflow-y-auto bg-[#020814] text-white lg:hidden"
+            className="fixed inset-0 z-10 min-h-[100dvh] overflow-y-auto bg-navy-deep text-white lg:hidden"
           >
             <Image
               src="/images/Git-Hero.png"
@@ -135,10 +136,10 @@ export function HeroNavbar() {
               sizes="100vw"
               className="pointer-events-none object-cover object-[60%_center] opacity-[0.12]"
             />
-            <span aria-hidden="true" className="pointer-events-none absolute inset-0 bg-[linear-gradient(180deg,rgba(2,8,20,0.58)_0%,rgba(2,8,20,0.9)_48%,#020814_100%)]" />
+            <span aria-hidden="true" className="pointer-events-none absolute inset-0 bg-[linear-gradient(180deg,rgba(7,32,65,0.58)_0%,rgba(7,32,65,0.9)_48%,var(--navy-deep)_100%)]" />
 
             <div className="relative flex min-h-[100dvh] flex-col px-5 pb-7 pt-28 sm:px-8">
-              <ul className="ml-auto flex w-full flex-col items-end border-b border-white/20 pb-7 text-right">
+              <ul className="ml-auto flex w-full flex-col items-end pb-7 text-right">
                 {NAV_LINKS.map((link, index) => (
                   <motion.li
                     key={link.label}
@@ -158,22 +159,6 @@ export function HeroNavbar() {
                   </motion.li>
                 ))}
               </ul>
-
-              <motion.div
-                initial={reduceMotion ? false : { opacity: 0, y: 24 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: reduceMotion ? 0 : 0.55, delay: reduceMotion ? 0 : 0.5, ease: [0.16, 1, 0.3, 1] }}
-                className="mt-auto flex justify-end pt-8"
-              >
-              <RegistrationCta
-                href={registrationHref}
-                target={GITREADY_EVENT.registrationUrl ? "_blank" : undefined}
-                rel={GITREADY_EVENT.registrationUrl ? "noopener noreferrer" : undefined}
-                onClick={() => setIsMenuOpen(false)}
-                onDark
-                className="w-fit"
-              />
-              </motion.div>
             </div>
           </motion.div>
         ) : null}

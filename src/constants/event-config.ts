@@ -43,7 +43,7 @@ export const EVENT_INFO: EventInfoItem[] = GITREADY_EVENT.eventSchedule
       },
     ]
   : [
-      { icon: Calendar, label: "Tanggal", value: "Akan diumumkan" },
-      { icon: Clock, label: "Waktu", value: "Akan diumumkan" },
-      { icon: MapPin, label: "Lokasi", value: "Akan diumumkan" },
+      { icon: Calendar, label: "Tanggal", value: "Sabtu, 19 September" },
+      { icon: Clock, label: "Waktu", value: "08.00 - 12.40" },
+      { icon: MapPin, label: "Lokasi", value: "Kampus BINUS @Malang (Onsite)" },
     ];

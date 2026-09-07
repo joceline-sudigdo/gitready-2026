@@ -32,12 +32,12 @@ export function RegistrationCta({ className = "", onDark = true, ...props }: Reg
     <a
       {...props}
       aria-label={props["aria-label"] ?? "Daftar"}
-      className={`group inline-flex h-12 items-center justify-center overflow-hidden border border-blue-400/60 p-[3px] shadow-sm transition-[transform,border-color] hover:-translate-y-0.5 hover:border-blue-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-300 ${onDark ? "bg-white text-ink" : "bg-ink text-white"} ${className}`}
+      className={`group inline-flex h-12 items-center justify-center overflow-hidden rounded-xl border border-[#3775AF]/60 p-[3px] shadow-sm transition-[transform,border-color] hover:-translate-y-0.5 hover:border-[#3465A9] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#3465A9] ${onDark ? "bg-white text-ink" : "bg-ink text-white"} ${className}`}
     >
-      <span className="flex h-10 items-center justify-center px-4">
+      <span className="flex h-10 items-center justify-center rounded-xl px-4">
         <VerticalSwapLabel>Daftar</VerticalSwapLabel>
       </span>
-      <span className="flex size-10 items-center justify-center bg-blue-600 text-white">
+      <span className="flex size-10 items-center justify-center rounded-xl bg-[#0755B1] text-white">
         <HorizontalSwapArrow />
       </span>
     </a>
