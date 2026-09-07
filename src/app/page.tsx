@@ -1,48 +1,40 @@
 import type { Metadata } from "next";
-import { Poppins } from "next/font/google";
 
-import { EndlessRunnerGame } from "@/components/game/viva-run";
-import { GitWorkflowSimulator } from "@/components/git/GitWorkflowSim";
-import { LegacyEventDetails } from "@/components/legacy/legacy-event-details";
-import { LegacyFooter } from "@/components/legacy/legacy-footer";
-import { LegacyGuidebook } from "@/components/legacy/legacy-guidebook";
-import { LegacyHero } from "@/components/legacy/legacy-hero";
-import { LegacyNavbar } from "@/components/legacy/legacy-navbar";
-
-const poppins = Poppins({
-  subsets: ["latin"],
-  weight: ["300", "400", "500", "600", "700", "800"],
-  display: "swap",
-});
+import { EventDetailsSection } from "@/components/detail/event-details-section";
+import { SimulatorSection } from "@/components/experience-sections";
+import { FaqSection } from "@/components/faq/faq-section";
+import { Footer } from "@/components/footer";
+import { GuidebookSection } from "@/components/guidebook/guidebook-section";
+import { AboutSection } from "@/components/hero/about-section";
+import { HeroNavbar } from "@/components/hero/hero-navbar";
+import { HeroSection } from "@/components/hero/hero-section";
+import SpeakerSection from "@/components/hero/portfolio-about-section";
+import { MentorSection } from "@/components/mentor/mentor-section";
+import { RegistrationStatusSection } from "@/components/registration/registration-status-section";
 
 export const metadata: Metadata = {
-  title: "GitReady — Workshop Git & GitHub",
-  description: "Belajar Git & GitHub dari nol: workflow simulator interaktif, mini game, dan sesi bareng instruktur.",
+  title: "GitReady 2026 | Eksperimen",
+  robots: { index: false, follow: false },
 };
 
-export default function Home() {
+export default function CobaPage() {
   return (
-    <div className={poppins.className}>
-      <LegacyNavbar />
-      <main className="flex min-h-screen flex-col bg-[#DCE3ED]">
-        <LegacyHero />
-        <LegacyEventDetails />
-        <LegacyGuidebook />
-
-        <section className="px-6 pb-24 pt-16 sm:px-12 lg:px-16">
-          <div className="mx-auto max-w-7xl">
-            <h2 className="mb-6 bg-gradient-to-r from-[#2788CE] to-[#0054A5] bg-clip-text text-3xl font-extrabold uppercase tracking-wide text-transparent sm:text-4xl">Git Workflow Simulator</h2>
-            <GitWorkflowSimulator variant="head" />
-          </div>
-
-          <div className="mx-auto mt-20 max-w-7xl sm:mt-24 lg:mt-28">
-            <h2 className="mb-6 bg-gradient-to-r from-[#2788CE] to-[#0054A5] bg-clip-text text-3xl font-extrabold uppercase tracking-wide text-transparent sm:text-4xl">Viva Run</h2>
-            <EndlessRunnerGame variant="head" />
-          </div>
-        </section>
-
-        <LegacyFooter />
+    <>
+      <HeroNavbar />
+      <main id="top" className="relative flex min-h-screen w-full max-w-full flex-col overflow-x-clip bg-canvas">
+        <div className="relative isolate bg-[#020814]">
+          <HeroSection />
+          <AboutSection />
+          <SpeakerSection />
+          <MentorSection />
+        </div>
+        <EventDetailsSection />
+        <SimulatorSection />
+        <GuidebookSection />
+        {/* <RegistrationStatusSection /> */}
+        <FaqSection />
+        <Footer />
       </main>
-    </div>
+    </>
   );
 }
