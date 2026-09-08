@@ -11,29 +11,21 @@ type FaqItem = {
 
 const FAQ_ITEMS: FaqItem[] = [
   {
-    question: "Apa itu GitReady?",
-    answer: "GitReady adalah kegiatan belajar Git dan GitHub melalui praktik yang mengikuti alur kerja tim pengembangan.",
+    question: "Apakah saya perlu pengalaman sebelumnya?",
+    answer: "Tidak perlu! Workshop ini dirancang untuk pemula yang belum pernah menggunakan Git atau GitHub sama sekali.",
   },
   {
-    question: "Siapa yang cocok mengikuti GitReady?",
-    answer: "GitReady dirancang untuk pemula serta peserta yang ingin merapikan cara menggunakan Git dalam proyek bersama.",
+    question: "Apa yang harus saya bawa?",
+    answer: "Anda wajib membawa laptop pribadi dengan charger. Pastikan juga Git sudah ter-install di laptop Anda sebelum acara dimulai.",
   },
   {
-    question: "Apakah harus sudah memahami Git?",
-    answer: "Tidak. Materi dimulai dari konsep dan alur dasar, lalu berlanjut ke praktik yang lebih terstruktur.",
+    question: "Bagaimana cara install Git dan membuat akun GitHub?",
+    answer: "Anda bisa mengikuti panduan resmi. Untuk menginstall Git, kunjungi git-scm.com/downloads. Untuk membuat akun GitHub, kunjungi github.com/signup.",
   },
   {
-    question: "Kapan dan di mana acara berlangsung?",
-    answer: "Jadwal, waktu, dan lokasi belum diumumkan. Informasi resmi akan ditampilkan pada bagian Detail.",
-  },
-  {
-    question: "Apa yang perlu disiapkan?",
-    answer: "Daftar persiapan akan dicantumkan di buku panduan resmi. Panduan belum tersedia untuk saat ini.",
-  },
-  {
-    question: "Bagaimana cara mendaftar?",
-    answer: "Pendaftaran belum dibuka. Tombol Daftar akan diarahkan ke formulir resmi setelah tautannya tersedia.",
-  },
+    question: "Apakah makan siang disediakan?",
+    answer: "Ya, kami menyediakan makan siang untuk seluruh peserta.",
+  }
 ];
 
 function FaqRow({ item, index, open, onToggle }: { item: FaqItem; index: number; open: boolean; onToggle: () => void }) {

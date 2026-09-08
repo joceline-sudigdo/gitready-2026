@@ -1,10 +1,17 @@
 import { GITREADY_EVENT } from "@/constants/event-config";
 
-export const CONTACT_PERSON = {
-  name: "Jildzian Christian",
-  phone: "+62 813-4305-8784",
-  whatsappUrl: `https://wa.me/${"+62 813-4305-8784".replace(/[^0-9]/g, "")}`,
-};
+export const CONTACT_PERSONS = [
+  {
+    name: "Levi",
+    phone: "0878 9504 1041",
+    whatsappUrl: "https://wa.me/6287895041041",
+  },
+  {
+    name: "Carel",
+    phone: "0877 8902 2000",
+    whatsappUrl: "https://wa.me/6287789022000",
+  },
+];
 
 export type SocialLink = {
   label: string;

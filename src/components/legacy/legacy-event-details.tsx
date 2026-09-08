@@ -9,7 +9,7 @@ const EVENT_INFO = [
   { icon: MapPin, label: "Lokasi", value: "Binus@Malang (Onsite)" },
 ];
 
-const REGISTRATION_FORM_URL = "https://forms.gle/ganti-dengan-link-gform";
+const REGISTRATION_FORM_URL = "bncc.in/REGISTGITREADY2.0";
 
 export function LegacyEventDetails() {
   return (

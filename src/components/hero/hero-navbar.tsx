@@ -6,6 +6,7 @@ import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { Menu, X } from "lucide-react";
 
 import { NAV_LINKS } from "@/constants/hero-config";
+import { RegistrationCta } from "./registration-cta"; // sesuaikan path-nya
 
 function VerticalSwapText({ children, className = "" }: { children: string; className?: string }) {
   return (
@@ -39,6 +40,7 @@ function BNCCLogo() {
 export function HeroNavbar() {
   const [isOnDarkSection, setIsOnDarkSection] = useState(true);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [hasScrolledPastHero, setHasScrolledPastHero] = useState(false);
   const reduceMotion = useReducedMotion();
   const navbarOnDark = isMenuOpen || isOnDarkSection;
 
@@ -66,6 +68,27 @@ export function HeroNavbar() {
 
     themedSections.forEach((section) => observer.observe(section));
     updateNavbarTheme();
+    return () => observer.disconnect();
+  }, []);
+
+  // Deteksi kapan user udah scroll ngelewatin section hero
+  useEffect(() => {
+    const heroSection =
+      document.querySelector<HTMLElement>("[data-hero-section]") ??
+      document.querySelector<HTMLElement>("[data-navbar-theme]");
+
+    if (!heroSection) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        // dianggap "udah lewat hero" kalau hero-nya udah nggak keliatan
+        // dan posisinya di atas viewport (bukan belum sampai / di bawah)
+        setHasScrolledPastHero(!entry.isIntersecting && entry.boundingClientRect.top < 0);
+      },
+      { threshold: 0 }
+    );
+
+    observer.observe(heroSection);
     return () => observer.disconnect();
   }, []);
 
@@ -107,16 +130,32 @@ export function HeroNavbar() {
             </li>
           ))}
         </ul>
-        <button
-          type="button"
-          onClick={() => setIsMenuOpen((open) => !open)}
-          aria-controls="mobile-navigation"
-          aria-expanded={isMenuOpen}
-          aria-label={isMenuOpen ? "Tutup menu" : "Buka menu"}
-          className={`flex size-11 items-center justify-center border transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-bright lg:hidden ${navbarOnDark ? "border-white/25 hover:bg-white/10" : "border-navy/20 hover:bg-navy/10"}`}
-        >
-          {isMenuOpen ? <X className="size-7" strokeWidth={1.75} /> : <Menu className="size-7" strokeWidth={1.75} />}
-        </button>
+
+        <div className="flex items-center gap-3">
+          <AnimatePresence>
+            {hasScrolledPastHero && !isMenuOpen ? (
+              <motion.div
+                initial={reduceMotion ? false : { opacity: 0, y: -8, scale: 0.95 }}
+                animate={{ opacity: 1, y: 0, scale: 1 }}
+                exit={{ opacity: 0, y: -8, scale: 0.95 }}
+                transition={{ duration: reduceMotion ? 0 : 0.35, ease: [0.16, 1, 0.3, 1] }}
+              >
+                <RegistrationCta href="https://bncc.in/REGISTGITREADY2.0" onDark={navbarOnDark} />
+              </motion.div>
+            ) : null}
+          </AnimatePresence>
+
+          <button
+            type="button"
+            onClick={() => setIsMenuOpen((open) => !open)}
+            aria-controls="mobile-navigation"
+            aria-expanded={isMenuOpen}
+            aria-label={isMenuOpen ? "Tutup menu" : "Buka menu"}
+            className={`flex size-11 items-center justify-center border transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-bright lg:hidden ${navbarOnDark ? "border-white/25 hover:bg-white/10" : "border-navy/20 hover:bg-navy/10"}`}
+          >
+            {isMenuOpen ? <X className="size-7" strokeWidth={1.75} /> : <Menu className="size-7" strokeWidth={1.75} />}
+          </button>
+        </div>
       </nav>
 
       <AnimatePresence>

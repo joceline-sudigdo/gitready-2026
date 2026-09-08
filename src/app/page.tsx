@@ -11,6 +11,7 @@ import { HeroSection } from "@/components/hero/hero-section";
 import SpeakerSection from "@/components/hero/portfolio-about-section";
 import { MentorSection } from "@/components/mentor/mentor-section";
 import { RegistrationStatusSection } from "@/components/registration/registration-status-section";
+import { SponsorsSection } from "@/components/sponsors/sponsor";
 
 export const metadata: Metadata = {
   title: "GitReady 2026 | Eksperimen",
@@ -27,6 +28,7 @@ export default function CobaPage() {
           <AboutSection />
           <SpeakerSection />
           <MentorSection />
+          <SponsorsSection />
         </div>
         <EventDetailsSection />
         <SimulatorSection />

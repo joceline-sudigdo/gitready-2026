@@ -20,21 +20,22 @@ type Mentor = {
 
 const MENTORS: Mentor[] = [
   {
-    name: "Bintang Qurne",
-    role: "Contoh visual mentor",
-    bio: "Profil ini digunakan sementara untuk meninjau tampilan foto dan interaksi. Daftar mentor resmi akan diperbarui setelah dikonfirmasi.",
-    imageSrc: "/images/aku.png",
+    name: "Ni Putu Saraswati",
+    role: "Backend Praetorian",
+    bio: "Mahasiswa B29 Computer Science yang memiliki minat pada teknologi, pengembangan produk, dan inovasi digital. Berpengalaman sebagai Teaching Assistant dalam bidang Algoritma dan Pemrograman serta aktif dalam berbagai organisasi dan komunitas. Memiliki ketertarikan pada product development, project management, dan pengembangan solusi digital yang memberikan dampak nyata bagi masyarakat.",
+    imageSrc: "/images/saras.png",
     socials: [
       {
         label: "LinkedIn",
-        href: "https://www.linkedin.com/in/ayatullah-bintang-qurne-19a0992ba/",
+        href: "https://www.linkedin.com/in/ni-putu-saraswati/",
       },
     ],
   },
   {
-    name: "Mentor 02",
-    role: "Nama segera diumumkan",
+    name: "Joceline Sudigdo",
+    role: "Frontend Praetorian",
     bio: "Profil mentor akan ditampilkan setelah tim pendamping GitReady dikonfirmasi.",
+    imageSrc: "/images/joceline.jpg",
   },
   {
     name: "Mentor 03",
@@ -121,7 +122,7 @@ function MentorRow({ mentor, index, open, onToggle }: { mentor: Mentor; index: n
                       alt={mentor.name}
                       width={720}
                       height={900}
-                      className="h-full w-full object-cover transition-[filter,transform] duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover/mentor-photo:scale-[1.025] group-hover/mentor-photo:grayscale motion-reduce:transition-none"
+                      className="h-full w-full -translate-y-10 scale-150 object-cover object-top transition-[filter,transform] duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover/mentor-photo:scale-[1.15] group-hover/mentor-photo:grayscale motion-reduce:transition-none"
                     />
                     {linkedinProfile ? (
                       <a

@@ -86,7 +86,7 @@ export function HeroSection() {
           </motion.div>
           <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
             <motion.div style={reduceMotion ? undefined : { x: registrationX }}>
-              <RegistrationCta href="#daftar" />
+              <RegistrationCta href="https://bncc.in/REGISTGITREADY2.0" />
             </motion.div>
             <motion.div style={reduceMotion ? undefined : { x: detailsX }}>
               <a

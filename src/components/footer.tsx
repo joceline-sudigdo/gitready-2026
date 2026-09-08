@@ -4,7 +4,7 @@ import { motion, useReducedMotion } from "framer-motion";
 import { ArrowRight, ArrowUpRight } from "lucide-react";
 import Image from "next/image";
 
-import { CONTACT_PERSON, FOOTER_COPYRIGHT, SOCIAL_LINKS } from "@/constants/footer-config";
+import { CONTACT_PERSONS, FOOTER_COPYRIGHT, SOCIAL_LINKS } from "@/constants/footer-config";
 import { NAV_LINKS } from "@/constants/hero-config";
 
 const EASE = [0.16, 1, 0.3, 1] as const;
@@ -31,6 +31,7 @@ function FooterLink({ href, children, external = false }: { href: string; childr
 
 export function Footer() {
   const reduceMotion = useReducedMotion();
+  const primaryContact = CONTACT_PERSONS[0];
 
   return (
     <footer data-navbar-theme="light" className="overflow-hidden bg-white px-5 pb-7 pt-12 text-ink sm:px-8 sm:pt-16 lg:min-h-[100dvh] lg:px-14 lg:py-6">
@@ -47,7 +48,7 @@ export function Footer() {
               width={1000}
               height={200}
               priority={false}
-              className="h-[clamp(4.5rem,min(18vw,30vh),22rem)] w-auto object-contain"
+              className="h-[clamp(3rem,min(15vw,20vh),22rem)] w-auto object-contain"
             />
           </a>
         </div>
@@ -66,18 +67,23 @@ export function Footer() {
             <p className="mt-6 max-w-lg text-base leading-7 text-ink-muted sm:text-lg sm:leading-8">
               Punya pertanyaan tentang GitReady? Hubungi narahubung kami untuk informasi yang sudah dikonfirmasi.
             </p>
-            <a
-              href={CONTACT_PERSON.whatsappUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="group mt-8 inline-flex items-center gap-5 border-b border-navy pb-2 text-xl font-semibold tracking-[-0.04em] text-navy transition-colors hover:text-brand focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand focus-visible:ring-offset-4 focus-visible:ring-offset-white sm:text-2xl"
-            >
-              Hubungi {CONTACT_PERSON.name}
-              <span className="relative block size-5 overflow-hidden" aria-hidden="true">
-                <ArrowRight className="absolute inset-0 size-5 transition-transform duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:translate-x-[140%]" />
-                <ArrowUpRight className="absolute inset-0 size-5 -translate-x-[140%] translate-y-[140%] transition-transform duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:translate-x-0 group-hover:translate-y-0" />
-              </span>
-            </a>
+            <div className="mt-8 flex flex-col gap-4 sm:flex-row sm:flex-wrap sm:items-center sm:gap-8">
+              {CONTACT_PERSONS.map((person) => (
+                <a
+                  key={person.name}
+                  href={person.whatsappUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="group inline-flex items-center gap-5 border-b border-navy pb-2 text-xl font-semibold tracking-[-0.04em] text-navy transition-colors hover:text-brand focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand focus-visible:ring-offset-4 focus-visible:ring-offset-white sm:text-2xl"
+                >
+                  Hubungi {person.name}
+                  <span className="relative block size-5 overflow-hidden" aria-hidden="true">
+                    <ArrowRight className="absolute inset-0 size-5 transition-transform duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:translate-x-[140%]" />
+                    <ArrowUpRight className="absolute inset-0 size-5 -translate-x-[140%] translate-y-[140%] transition-transform duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:translate-x-0 group-hover:translate-y-0" />
+                  </span>
+                </a>
+              ))}
+            </div>
           </motion.div>
 
           <div>
@@ -105,25 +111,12 @@ export function Footer() {
           </div>
         </div>
 
-        <div className="grid gap-10 py-10 sm:py-12 lg:grid-cols-[1.2fr_0.85fr_0.75fr] lg:items-end lg:gap-16 lg:py-5">
+        <div className="flex flex-col gap-10 py-10 sm:py-12 lg:flex-row lg:items-end lg:justify-between lg:gap-16 lg:py-5">
           <p className="max-w-md text-2xl font-semibold leading-[1.05] tracking-[-0.045em] sm:text-3xl">
             GitReady adalah ruang belajar Git dan GitHub bersama BNCC.
           </p>
 
-          <div>
-            <p className="font-mono text-xs uppercase tracking-[0.1em] text-ink-muted">Narahubung</p>
-            <p className="mt-3 text-xl font-semibold tracking-[-0.04em]">{CONTACT_PERSON.name}</p>
-            <a
-              href={CONTACT_PERSON.whatsappUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="mt-1 inline-block text-lg text-ink-muted transition-colors hover:text-brand focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand"
-            >
-              {CONTACT_PERSON.phone}
-            </a>
-          </div>
-
-          <div className="lg:text-right">
+          <div className="flex flex-col items-start lg:items-end">
             <a href="https://bncc.net/" target="_blank" rel="noopener noreferrer" className="inline-flex focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand">
               <Image
                 src="/images/BNCC_Black.png"
