@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion, useReducedMotion, useScroll, useSpring, useTransform } from "framer-motion";
 
 import { HorizontalSwapArrow, RegistrationCta, VerticalSwapLabel } from "@/components/hero/registration-cta";
@@ -12,6 +12,12 @@ export function HeroSection() {
   const heroRef = useRef<HTMLElement>(null);
   const reduceMotion = useReducedMotion();
   const [introComplete, setIntroComplete] = useState(false);
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
   const { scrollYProgress } = useScroll({
     target: heroRef,
     offset: ["start start", "end start"],
@@ -22,7 +28,8 @@ export function HeroSection() {
   const registrationX = useSpring(registrationXTarget, { stiffness: 42, damping: 22, mass: 1.1 });
   const detailsX = useSpring(detailsXTarget, { stiffness: 42, damping: 22, mass: 1.1 });
 
-  const skipIntro = Boolean(reduceMotion);
+  // Sebelum mounted, selalu anggap belum reduce-motion (samain sama server) supaya tidak hydration mismatch
+  const skipIntro = mounted && Boolean(reduceMotion);
   const introDone = introComplete || skipIntro;
 
   const introLetters = Array.from(INTRO_TEXT);
