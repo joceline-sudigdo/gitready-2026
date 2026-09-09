@@ -13,11 +13,6 @@ import { MentorSection } from "@/components/mentor/mentor-section";
 import { RegistrationStatusSection } from "@/components/registration/registration-status-section";
 import { SponsorsSection } from "@/components/sponsors/sponsor";
 
-export const metadata: Metadata = {
-  title: "GitReady 2026 | Eksperimen",
-  robots: { index: false, follow: false },
-};
-
 export default function CobaPage() {
   return (
     <>

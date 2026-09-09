@@ -1,5 +1,5 @@
 import type { ComponentProps } from "react";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, Target } from "lucide-react";
 
 type RegistrationCtaProps = Omit<ComponentProps<"a">, "children"> & {
   onDark?: boolean;
@@ -30,6 +30,8 @@ export function HorizontalSwapArrow() {
 export function RegistrationCta({ className = "", onDark = true, ...props }: RegistrationCtaProps) {
   return (
     <a
+      target="_blank"
+      rel="noopener noreferrer"
       {...props}
       aria-label={props["aria-label"] ?? "Daftar"}
       className={`group inline-flex h-12 items-center justify-center overflow-hidden rounded-xl border border-[#3775AF]/60 p-[3px] shadow-sm transition-[transform,border-color] hover:-translate-y-0.5 hover:border-[#3465A9] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#3465A9] ${onDark ? "bg-white text-ink" : "bg-ink text-white"} ${className}`}

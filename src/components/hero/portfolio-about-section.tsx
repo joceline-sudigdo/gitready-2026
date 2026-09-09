@@ -29,7 +29,7 @@ const capabilities = [
 // ---------------------------------------------------------------------------
 
 const lexySocials = [
-  { label: "GitHub", href: "https://github.com/bintangqurne", icon: "github" },
+  { label: "GitHub", href: "https://github.com/lagxy", icon: "github" },
   {
     label: "LinkedIn",
     href: "https://www.linkedin.com/in/lexy-samuel/",
@@ -348,7 +348,7 @@ function SpeakerHisam() {
             <div className="about-portrait relative h-[460px] w-full shrink-0 overflow-hidden bg-[#061225] sm:h-auto sm:w-[62%] lg:min-h-[640px] lg:max-h-[860px] xl:w-[64%]">
               <motion.div className="absolute inset-0" style={{ scale: reduceMotion ? 1 : portraitScale }}>
                 <Image
-                  src="/images/Hisam.png"
+                  src="/images/hisam.png"
                   alt="Hisam, pemateri GitReady 2026"
                   fill
                   sizes="(max-width: 639px) 100vw, 36vw"

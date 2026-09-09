@@ -85,6 +85,13 @@ export function EventDetailsSection() {
             transition={{ duration: reduceMotion ? 0 : 0.62, delay: reduceMotion ? 0 : DETAIL_ITEMS.length * 0.07, ease: EASE }}
             className="group relative grid min-h-36 overflow-hidden border-b border-navy px-1 py-8 sm:min-h-40 sm:grid-cols-[10rem_1fr] sm:items-center sm:px-5 lg:min-h-44 lg:grid-cols-[13rem_1fr] lg:px-6"
           >
+            <a
+              href="https://bncc.in/REGISTGITREADY2.0"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Buka formulir pendaftaran"
+              className="absolute inset-0 z-20 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand focus-visible:ring-offset-4 focus-visible:ring-offset-white"
+            />
             <span
               aria-hidden="true"
               className="absolute inset-0 -translate-x-[101%] bg-navy transition-transform duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:translate-x-0 motion-reduce:transition-none"
@@ -93,25 +100,13 @@ export function EventDetailsSection() {
               Pendaftaran
             </dt>
             <dd className="relative z-10 mt-3 flex justify-end sm:mt-0">
-              {GITREADY_EVENT.registrationUrl ? (
-                <a
-                  href={GITREADY_EVENT.registrationUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  aria-label="Buka formulir pendaftaran"
-                  className="inline-flex size-11 items-center justify-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand focus-visible:ring-offset-4 focus-visible:ring-offset-white"
-                >
-                  <RegistrationArrow />
-                </a>
-              ) : (
-                <span
-                  aria-disabled="true"
-                  aria-label="Pendaftaran belum dibuka"
-                  className="inline-flex size-11 items-center justify-center"
-                >
-                  <RegistrationArrow />
-                </span>
-              )}
+              <span
+                aria-hidden="true"
+                className="relative block size-11 overflow-hidden text-ink transition-colors duration-500 group-hover:text-white"
+              >
+                <ArrowRight className="absolute inset-0 m-auto size-7 transition-transform duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:translate-x-[140%] group-hover:-translate-y-[140%] motion-reduce:transition-none" />
+                <ArrowUpRight className="absolute inset-0 m-auto size-7 -translate-x-[140%] translate-y-[140%] transition-transform duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:translate-x-0 group-hover:translate-y-0 motion-reduce:transition-none" />
+              </span>
             </dd>
           </motion.div>
         </dl>

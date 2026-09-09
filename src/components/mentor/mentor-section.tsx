@@ -34,15 +34,52 @@ const MENTORS: Mentor[] = [
   {
     name: "Joceline Sudigdo",
     role: "Frontend Praetorian",
-    bio: "Profil mentor akan ditampilkan setelah tim pendamping GitReady dikonfirmasi.",
+    bio: "Mahasiswa Computer Science B29 yang passionate di bidang teknologi, software development, dan pengalaman digital kreatif, dengan minat pada web development, game development, serta pemrograman. Saya senang belajar, memecahkan masalah, bekerja dalam tim, dan menciptakan proyek digital yang bermakna.",
     imageSrc: "/images/joceline.jpg",
+    socials: [
+      {
+        label: "LinkedIn",
+        href: "https://www.linkedin.com/in/joceline-sudigdo-98a262224/",
+      }
+    ]
   },
   {
-    name: "Mentor 03",
-    role: "Nama segera diumumkan",
-    bio: "Profil mentor akan ditampilkan setelah tim pendamping GitReady dikonfirmasi.",
+    name: "Muhammad Luthfi Abrar",
+    role: "UI/UX Praetorian",
+    bio: "Mahasiswa Computer Science di BINUS University yang memiliki ketertarikan pada UI/UX dan pengembangan produk digital. Sebagai UI/UX Praetorian, berfokus menciptakan pengalaman pengguna yang intuitif, fungsional, dan menarik.",
+    imageSrc: "/images/luthfi.png",
+    socials: [
+      {
+        label: "LinkedIn",
+        href: "https://www.linkedin.com/in/muhammad-luthfi-abrar-780bab382/",
+      },
+    ],
   },
-];
+  {
+    name: "Rafael Mikha Elkana",
+    role: "C Programming Praetorian",
+    bio: "Mahasiswa BINUS University yang memiliki ketertarikan pada pemrograman dan pengembangan solusi berbasis teknologi. Sebagai C Programming Praetorian, berfokus mengasah kemampuan pemrograman, logika, dan problem-solving.",
+    imageSrc: "/images/rafael.png",
+    socials: [
+      {
+        label: "LinkedIn",
+        href: "https://www.linkedin.com/in/rafael-mikha-elkana-65a90438a/",
+      },
+    ],
+  },
+  {
+    name: "Evendy Janova Hartono",
+    role: "Java Programming Praetorian",
+    bio: "Mahasiswa yang memiliki ketertarikan pada pemrograman dan pengembangan teknologi. Sebagai Java Programming Praetorian, berfokus mengembangkan kemampuan coding, logika, dan problem-solving melalui pemrograman Java.",
+    imageSrc: "/images/evendy.jpeg",
+    socials: [
+      {
+        label: "LinkedIn",
+        href: "https://www.linkedin.com/in/evendy-hartono-484279385/",
+      },
+    ],
+  },
+]
 
 function MentorRow({ mentor, index, open, onToggle }: { mentor: Mentor; index: number; open: boolean; onToggle: () => void }) {
   const reduceMotion = useReducedMotion();
@@ -122,7 +159,7 @@ function MentorRow({ mentor, index, open, onToggle }: { mentor: Mentor; index: n
                       alt={mentor.name}
                       width={720}
                       height={900}
-                      className="h-full w-full -translate-y-10 scale-150 object-cover object-top transition-[filter,transform] duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover/mentor-photo:scale-[1.15] group-hover/mentor-photo:grayscale motion-reduce:transition-none"
+                      className="h-full w-full scale-100 object-cover object-top transition-[filter,transform] duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover/mentor-photo:scale-[1.15] group-hover/mentor-photo:grayscale motion-reduce:transition-none"
                     />
                     {linkedinProfile ? (
                       <a
