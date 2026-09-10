@@ -132,9 +132,11 @@ export function HeroNavbar() {
         </ul>
 
         <div className="flex items-center gap-3">
+          {/* CTA di navbar cuma tampil di layar lg ke atas. Di mobile, CTA-nya dipindah ke dalam panel hamburger menu. */}
           <AnimatePresence>
             {hasScrolledPastHero && !isMenuOpen ? (
               <motion.div
+                className="hidden lg:block"
                 initial={reduceMotion ? false : { opacity: 0, y: -8, scale: 0.95 }}
                 animate={{ opacity: 1, y: 0, scale: 1 }}
                 exit={{ opacity: 0, y: -8, scale: 0.95 }}
@@ -198,6 +200,22 @@ export function HeroNavbar() {
                   </motion.li>
                 ))}
               </ul>
+
+              {/* Tombol daftar dipindah ke sini: cuma muncul di dalam menu mobile, dan cuma kalau udah scroll ngelewatin hero */}
+              {hasScrolledPastHero ? (
+                <motion.div
+                  initial={reduceMotion ? false : { opacity: 0, y: 24 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{
+                    duration: reduceMotion ? 0 : 0.55,
+                    delay: reduceMotion ? 0 : 0.18 + NAV_LINKS.length * 0.055,
+                    ease: [0.16, 1, 0.3, 1],
+                  }}
+                  className="ml-auto w-fit"
+                >
+                  <RegistrationCta href="https://bncc.in/REGISTGITREADY2.0" onDark />
+                </motion.div>
+              ) : null}
             </div>
           </motion.div>
         ) : null}

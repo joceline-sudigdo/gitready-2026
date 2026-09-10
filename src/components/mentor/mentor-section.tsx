@@ -151,7 +151,7 @@ function MentorRow({ mentor, index, open, onToggle }: { mentor: Mentor; index: n
                 ) : null}
               </div>
 
-              <div className="group/mentor-photo relative order-1 flex aspect-[4/3] items-center justify-center overflow-hidden border border-blue-100/15 bg-[#061225] lg:order-2 lg:aspect-[4/5]">
+              <div className="group/mentor-photo relative order-1 flex aspect-[3/4] items-center justify-center overflow-hidden border border-blue-100/15 bg-[#061225] sm:aspect-[4/5] lg:order-2">
                 {mentor.imageSrc ? (
                   <>
                     <Image
@@ -159,7 +159,7 @@ function MentorRow({ mentor, index, open, onToggle }: { mentor: Mentor; index: n
                       alt={mentor.name}
                       width={720}
                       height={900}
-                      className="h-full w-full scale-100 object-cover object-top transition-[filter,transform] duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover/mentor-photo:scale-[1.15] group-hover/mentor-photo:grayscale motion-reduce:transition-none"
+                      className="h-full w-full scale-100 object-cover object-[center_30%] transition-[filter,transform] duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover/mentor-photo:scale-[1.15] group-hover/mentor-photo:grayscale motion-reduce:transition-none"
                     />
                     {linkedinProfile ? (
                       <a
