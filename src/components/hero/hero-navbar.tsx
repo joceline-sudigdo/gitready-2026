@@ -125,7 +125,9 @@ export function HeroNavbar() {
           {NAV_LINKS.map((link) => (
             <li key={link.label}>
               <a href={link.href} aria-label={link.label} className="group block rounded-sm text-base font-medium leading-tight focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-bright">
-                <VerticalSwapText className="h-[1.25em] whitespace-nowrap" children={link.label} />
+                <VerticalSwapText className="h-[1.25em] whitespace-nowrap">
+                  {link.label}
+                </VerticalSwapText>
               </a>
             </li>
           ))}
@@ -195,7 +197,9 @@ export function HeroNavbar() {
                       onClick={() => setIsMenuOpen(false)}
                       className="group block py-1 font-display text-[clamp(2.65rem,13vw,4.5rem)] font-semibold leading-[0.94] tracking-[-0.065em] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-bright"
                     >
-                      <VerticalSwapText className="h-[1em] w-fit" children={link.label} />
+                      <VerticalSwapText className="h-[1em] w-fit">
+                        {link.label}
+                      </VerticalSwapText>
                     </a>
                   </motion.li>
                 ))}
