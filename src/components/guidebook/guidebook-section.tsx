@@ -12,26 +12,30 @@ import {
 } from "framer-motion";
 import { ArrowDownToLine } from "lucide-react";
 
-const PDF_PATH =
-  "/ConvNeXt-2U_A_3-D_Deep_Learning-Based_Segmentation_Model_for_Unified_and_Automatic_Segmentation_of_Lungs_Normal_Liver_and_Tumors_in_Y-90_Radioembolization_Dosimetry.pdf";
+const PDF_PATH = "/GuideBook.pdf";
 
 type BookPage = {
   imageSrc: string;
   alt: string;
 };
 
-const BOOK_PAGES: BookPage[] = Array.from({ length: 10 }, (_, index) => {
+// File-nya ada di public/images/guidebook/convnext/ dengan nama 1.png sampai 19.png
+const TOTAL_PAGES = 19;
+
+const BOOK_PAGES: BookPage[] = Array.from({ length: TOTAL_PAGES }, (_, index) => {
   const pageNumber = index + 1;
 
   return {
-    imageSrc: `/images/guidebook/convnext/page-${String(pageNumber).padStart(2, "0")}.jpg`,
-    alt: `Halaman ${pageNumber} dari paper ConvNeXt-2U`,
+    imageSrc: `/images/guidebook/convnext/${pageNumber}.png`,
+    alt: `Halaman ${pageNumber} dari buku panduan GitReady`,
   };
 });
 
-const BOOK_LEAVES = Array.from({ length: 5 }, (_, index) => ({
+// Setiap "leaf" (lembar) punya 2 sisi: depan & belakang, kecuali kalau jumlah
+// halamannya ganjil, leaf terakhir cuma punya sisi depan.
+const BOOK_LEAVES = Array.from({ length: Math.ceil(BOOK_PAGES.length / 2) }, (_, index) => ({
   front: BOOK_PAGES[index * 2],
-  back: BOOK_PAGES[index * 2 + 1],
+  back: BOOK_PAGES[index * 2 + 1] as BookPage | undefined,
 }));
 
 function BookFace({ page, back, priority }: { page: BookPage; back?: boolean; priority?: boolean }) {
@@ -56,22 +60,38 @@ function BookFace({ page, back, priority }: { page: BookPage; back?: boolean; pr
   );
 }
 
+function BookFaceBlank({ back }: { back?: boolean }) {
+  return (
+    <div
+      className={`absolute inset-0 overflow-hidden border border-line bg-surface shadow-[10px_22px_45px_rgba(7,41,85,0.22)] [backface-visibility:hidden] ${back ? "[transform:rotateY(180deg)]" : ""}`}
+    />
+  );
+}
+
 function ScrollBookLeaf({
   leaf,
   index,
+  totalLeaves,
   progress,
   reduceMotion,
 }: {
   leaf: (typeof BOOK_LEAVES)[number];
   index: number;
+  totalLeaves: number;
   progress: MotionValue<number>;
   reduceMotion: boolean;
 }) {
-  const turnStart = 0.08 + index * 0.145;
-  const turnEnd = turnStart + 0.105;
+  // Sebar titik "balik halaman" secara merata di sepanjang rentang scroll (6%–94%),
+  // jadi rumus ini otomatis nyesuain kalau jumlah halamannya berubah.
+  const rangeStart = 0.06;
+  const rangeEnd = 0.94;
+  const perLeafSpan = (rangeEnd - rangeStart) / totalLeaves;
+  const turnStart = rangeStart + index * perLeafSpan;
+  const turnEnd = turnStart + perLeafSpan * 0.75;
+
   const rotateY = useTransform(progress, [turnStart, turnEnd], [0, -180]);
   const zIndex = useTransform(progress, (value) =>
-    value >= turnEnd ? index + 1 : BOOK_LEAVES.length - index + 10,
+    value >= turnEnd ? index + 1 : totalLeaves - index + 10,
   );
 
   return (
@@ -83,7 +103,7 @@ function ScrollBookLeaf({
       className="absolute left-1/2 top-0 h-full w-1/2 origin-left [transform-style:preserve-3d]"
     >
       <BookFace page={leaf.front} priority={index === 0} />
-      <BookFace page={leaf.back} back />
+      {leaf.back ? <BookFace page={leaf.back} back /> : <BookFaceBlank back />}
     </motion.div>
   );
 }
@@ -103,11 +123,16 @@ function InteractiveBook() {
   const bookX = useTransform(smoothProgress, [0.08, 0.185], ["-25%", "0%"]);
   const bookRotateX = useTransform(smoothProgress, [0.01, 0.1], [3, 1.5]);
 
+  // Durasi scroll disesuain sama jumlah halaman biar tiap halaman kebagian "jatah"
+  // waktu balik yang wajar (kira-kira 46dvh per leaf, minimal 360dvh total).
+  const scrollHeight = `${Math.max(360, BOOK_LEAVES.length * 46)}dvh`;
+
   return (
     <div
       ref={scrollRef}
       aria-label="Dokumen berbentuk buku yang terbuka saat halaman digulir"
-      className={reduceMotion ? "relative" : "relative h-[420dvh]"}
+      className="relative"
+      style={reduceMotion ? undefined : { height: scrollHeight }}
     >
       <div className={reduceMotion ? "relative flex min-h-[70dvh] items-center justify-center py-6 sm:py-10" : "sticky top-20 flex min-h-[calc(100dvh-5rem)] items-center justify-center lg:items-start lg:pt-6"}>
         <div
@@ -131,6 +156,7 @@ function InteractiveBook() {
                 key={leaf.front.imageSrc}
                 leaf={leaf}
                 index={index}
+                totalLeaves={BOOK_LEAVES.length}
                 progress={smoothProgress}
                 reduceMotion={Boolean(reduceMotion)}
               />
@@ -171,7 +197,7 @@ export function GuidebookSection() {
           <div className="mx-auto flex w-[min(96vw,64rem)] justify-end pt-6 sm:pt-8">
             <a
               href={PDF_PATH}
-              download="ConvNeXt-2U.pdf"
+              download="GuideBook.pdf"
               className="group inline-flex min-h-11 items-center gap-3 border-b border-navy pb-1 text-sm font-semibold text-navy transition-colors hover:text-brand focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand focus-visible:ring-offset-4 focus-visible:ring-offset-white sm:text-base"
             >
               Download PDF

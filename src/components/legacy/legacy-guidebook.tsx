@@ -3,7 +3,7 @@
 import { motion } from "framer-motion";
 import { BookOpen, Download, FileText } from "lucide-react";
 
-const PDF_PATH = "/UAP ISYS6898003 AlgoProg 2520 - Tipe A (1).pdf";
+const PDF_PATH = "/Guidebook.pdf";
 const DOWNLOAD_FILENAME = "Buku-Panduan-GitReady.pdf";
 
 export function LegacyGuidebook() {
