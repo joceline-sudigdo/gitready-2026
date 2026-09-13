@@ -45,5 +45,5 @@ export const EVENT_INFO: EventInfoItem[] = GITREADY_EVENT.eventSchedule
   : [
       { icon: Calendar, label: "Tanggal", value: "Sabtu, 19 September" },
       { icon: Clock, label: "Waktu", value: "08.00 - 12.40 WIB" },
-      { icon: MapPin, label: "Lokasi", value: "BINUS@Malang R0206 - Business Incubator Lab" },
+      { icon: MapPin, label: "Lokasi", value: "BINUS@Malang R0413 - Smart Class" },
     ];
